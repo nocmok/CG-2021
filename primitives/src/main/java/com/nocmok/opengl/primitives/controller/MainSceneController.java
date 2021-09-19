@@ -1,6 +1,7 @@
 package com.nocmok.opengl.primitives.controller;
 
 import com.nocmok.opengl.primitives.controller.action.G2LineDragHandler;
+import com.nocmok.opengl.primitives.controller.action.LineDragHandler;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.primitives.drawer.G2LineDrawer;
 import com.nocmok.opengl.primitives.drawer.LineDrawer;
@@ -17,8 +18,6 @@ import java.util.ResourceBundle;
 
 public class MainSceneController extends AbstractController {
 
-    private final Map<Class<?>, Object> customDrawers = new HashMap<>();
-    private final Map<Class<?>, Object> graphics2dDrawers = new HashMap<>();
     @FXML
     private GridPane root;
     @FXML
@@ -27,11 +26,6 @@ public class MainSceneController extends AbstractController {
     private StackPane g2Frame;
     private PixelatedCanvas g2Canvas;
     private PixelatedCanvas customCanvas;
-
-    {
-        customDrawers.put(LineDrawer.class, new LineDrawer());
-        graphics2dDrawers.put(G2LineDrawer.class, new G2LineDrawer());
-    }
 
     @Override public Parent getRoot() {
         return root;
@@ -49,7 +43,7 @@ public class MainSceneController extends AbstractController {
 
         // grag & drop
         new G2LineDragHandler().attach(g2Canvas);
-        new G2LineDragHandler().attach(customCanvas);
+        new LineDragHandler().attach(customCanvas);
 
         g2Frame.getChildren().add(g2Canvas);
         customFrame.getChildren().add(customCanvas);

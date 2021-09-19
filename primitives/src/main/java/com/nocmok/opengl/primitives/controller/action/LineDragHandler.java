@@ -1,14 +1,17 @@
 package com.nocmok.opengl.primitives.controller.action;
 
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
+import com.nocmok.opengl.primitives.drawer.LineDrawer;
 import com.nocmok.opengl.primitives.util.Rectangle;
 import javafx.scene.input.MouseEvent;
 
 import java.awt.Color;
 
-public class G2LineDragHandler extends ShapeDragHandler {
+public class LineDragHandler extends ShapeDragHandler {
 
     private PixelatedCanvas canvas;
+
+    private LineDrawer drawer;
 
     private PixelatedCanvas.Graphics2DWrapper g2;
 
@@ -24,6 +27,7 @@ public class G2LineDragHandler extends ShapeDragHandler {
         super.attach(canvas);
         this.canvas = canvas;
         this.g2 = canvas.createGraphicsWrapper();
+        this.drawer = new LineDrawer((x, y) -> g2.drawPixel(x, y, Color.ORANGE));
     }
 
     @Override public void onDragStarted(MouseEvent e) {
@@ -39,7 +43,7 @@ public class G2LineDragHandler extends ShapeDragHandler {
         }
         var areaToClear = Rectangle.ofPoints(dragX0, dragY0, dragX1, dragY1);
         g2.fillRect(areaToClear, Color.WHITE);
-        g2.drawLine(dragX0, dragY0, newDragX1, newDragY1, Color.BLACK);
+        drawer.drawLine(dragX0, dragY0, newDragX1, newDragY1);
         var newShapeArea = Rectangle.ofPoints(dragX0, dragY0, newDragX1, newDragY1);
         g2.flushRect(areaToClear.add(newShapeArea));
         dragX1 = newDragX1;

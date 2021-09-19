@@ -118,6 +118,13 @@ public class PixelatedCanvas extends Canvas {
             g2.setColor(java.awt.Color.BLACK);
         }
 
+        public void drawPixel(int x, int y, java.awt.Color color) {
+            if (!canvas.checkBoundaries(x, y)) {
+                return;
+            }
+            image.setRGB(x, y, color.getRGB());
+        }
+
         public void drawLine(int x1, int y1, int x2, int y2, java.awt.Color color) {
             g2.setColor(color);
             g2.drawLine(x1, y1, x2, y2);
