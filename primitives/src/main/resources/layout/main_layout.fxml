@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
+          fx:controller="com.nocmok.opengl.primitives.controller.MainSceneController"
+>
+    <StackPane fx:id="customFrame" GridPane.columnIndex="0" GridPane.rowIndex="1" >
+
+    </StackPane>
+    <StackPane fx:id="g2Frame" GridPane.columnIndex="1" GridPane.rowIndex="1">
+
+    </StackPane>
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER" fillWidth="true"/>
+        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER" fillWidth="true"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="NEVER" minHeight="25" valignment="CENTER" fillHeight="true"/>
+        <RowConstraints vgrow="ALWAYS" valignment="CENTER" fillHeight="true"/>
+    </rowConstraints>
+</GridPane>

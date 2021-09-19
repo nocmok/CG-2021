@@ -1,0 +1,50 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+javafx {
+    if (System.properties.get('os.arch') == 'aarch64') {
+        println "probably running on a sillicon m1, using local jfx sdk: ${System.getenv('JAVAFX_HOME')}"
+        sdk System.getenv('JAVAFX_HOME')
+    } else {
+        version = "17"
+    }
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+        resources {
+            srcDirs 'src/main/resources'
+        }
+    }
+}
+
+processResources.duplicatesStrategy(DuplicatesStrategy.WARN)
+
+application {
+    mainClass = 'com.nocmok.opengl.primitives.Main'
+}
+
+run {
+    standardInput = System.in
+    standardOutput = System.out
+}
