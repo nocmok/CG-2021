@@ -140,6 +140,11 @@ public class PixelatedCanvas extends Canvas {
             g2.drawOval(x, y, width, height);
         }
 
+        public void drawCircle(int x, int y, int size, java.awt.Color color) {
+            g2.setColor(color);
+            g2.drawOval(x, y, size, size);
+        }
+
         public void flush() {
             flushRect(Rectangle.ofSize(0, 0, canvas.xPixels, canvas.yPixels));
         }

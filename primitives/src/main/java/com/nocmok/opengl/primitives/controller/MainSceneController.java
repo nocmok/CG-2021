@@ -1,10 +1,7 @@
 package com.nocmok.opengl.primitives.controller;
 
-import com.nocmok.opengl.primitives.controller.action.G2LineDragHandler;
-import com.nocmok.opengl.primitives.controller.action.LineDragHandler;
+import com.nocmok.opengl.primitives.controller.action.G2CircleDragHandler;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
-import com.nocmok.opengl.primitives.drawer.G2LineDrawer;
-import com.nocmok.opengl.primitives.drawer.LineDrawer;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
@@ -12,8 +9,6 @@ import javafx.scene.layout.StackPane;
 
 import java.awt.Color;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainSceneController extends AbstractController {
@@ -33,7 +28,7 @@ public class MainSceneController extends AbstractController {
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         g2Canvas = new PixelatedCanvas(100, 140);
-        customCanvas = new PixelatedCanvas(100,140);
+        customCanvas = new PixelatedCanvas(100, 140);
 
         g2Canvas.setWidth(500);
         g2Canvas.setHeight(700);
@@ -42,8 +37,13 @@ public class MainSceneController extends AbstractController {
         customCanvas.setHeight(700);
 
         // grag & drop
-        new G2LineDragHandler().attach(g2Canvas);
-        new LineDragHandler().attach(customCanvas);
+
+        // line controller
+//        new G2LineDragHandler().attach(g2Canvas);
+//        new LineDragHandler().attach(customCanvas);
+
+        // circle controller
+        new G2CircleDragHandler().attach(g2Canvas);
 
         g2Frame.getChildren().add(g2Canvas);
         customFrame.getChildren().add(customCanvas);

@@ -34,6 +34,10 @@ public class Rectangle {
         return new Rectangle(x, y, w, h);
     }
 
+    public static Rectangle squareOfSize(int x, int y, int s) {
+        return new Rectangle(x, y, s, s);
+    }
+
     /**
      * inclusive
      */
@@ -52,10 +56,6 @@ public class Rectangle {
         return Rectangle.ofPoints(Integer.min(x, other.x),
                 Integer.min(y, other.y),
                 Integer.max(x2(), other.x2()),
-                Integer.max(y2(), other.x2()));
-    }
-
-    public Rectangle fat(int toFat) {
-        return Rectangle.ofSize(x - toFat, y - toFat, w + toFat * 2, h + toFat * 2);
+                Integer.max(y2(), other.y2()));
     }
 }
