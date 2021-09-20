@@ -42,7 +42,7 @@ public class LineDrawer {
         for (int i = 0; i <= Integer.max(deltaX, deltaY); ++i) {
             grid.set(x, y);
             error += deltaError;
-            if (error >= errorThreshold) {
+            if (2 * error >= errorThreshold) {
                 y += yDir;
                 x += xDir;
                 error -= errorThreshold;
