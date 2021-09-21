@@ -10,8 +10,8 @@ import com.nocmok.opengl.primitives.controller.action.ShapeDragHandler;
 import com.nocmok.opengl.primitives.controller.action.Zoomer;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
@@ -20,7 +20,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainSceneController extends AbstractController {
@@ -41,6 +44,8 @@ public class MainSceneController extends AbstractController {
     private ScrollPane g2Scroll;
     @FXML
     private ScrollPane myScroll;
+    @FXML
+    private Button about;
     private PixelatedCanvas g2Canvas;
     private PixelatedCanvas myCanvas;
 
@@ -68,6 +73,15 @@ public class MainSceneController extends AbstractController {
         });
 
         header.getChildren().add(button);
+    }
+
+    private String getAboutMessage() {
+        try {
+            var in = getClass().getClassLoader().getResourceAsStream("About.txt");
+            return in == null ? null : new String(in.readAllBytes(), StandardCharsets.US_ASCII);
+        } catch (IOException ignore) {
+        }
+        return null;
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -141,6 +155,15 @@ public class MainSceneController extends AbstractController {
             myScroll.setVvalue(myVvalue);
             g2Scroll.setHvalue(myHvalue);
             g2Scroll.setVvalue(myVvalue);
+        });
+
+        String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
+        about.setOnMouseClicked(e -> {
+            var alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("About this program");
+            alert.setHeaderText("About this program");
+            alert.setContentText(aboutMessage);
+            alert.showAndWait();
         });
     }
 }

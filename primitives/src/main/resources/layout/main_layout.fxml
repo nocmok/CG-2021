@@ -11,14 +11,25 @@
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
           fx:controller="com.nocmok.opengl.primitives.controller.MainSceneController"
 >
-    <HBox fx:id="header" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" GridPane.rowSpan="1">
-        <Button fx:id="zoomIn">
-            +
-        </Button>
-        <Button fx:id="zoomOut">
-            -
-        </Button>
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" GridPane.rowSpan="1">
+        <HBox fx:id="header">
+
+        </HBox>
+        <HBox>
+            <Button fx:id="zoomIn">
+                +
+            </Button>
+            <Button fx:id="zoomOut">
+                -
+            </Button>
+        </HBox>
+        <HBox>
+            <Button fx:id="about">
+                about
+            </Button>
+        </HBox>
     </HBox>
+
     <ScrollPane fx:id="g2Scroll" vbarPolicy="ALWAYS" hbarPolicy="ALWAYS" hvalue="0.5" vvalue="0.5"
                 style="-fx-border-color: black" GridPane.columnIndex="0"
                 GridPane.rowIndex="1">
