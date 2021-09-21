@@ -3,7 +3,6 @@ package com.nocmok.opengl.primitives.controller.action;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.primitives.drawer.CircleDrawer;
 import com.nocmok.opengl.primitives.util.Rectangle;
-import javafx.scene.input.MouseEvent;
 
 import java.awt.Color;
 
@@ -30,9 +29,9 @@ public class CircleDragHandler extends ShapeDragHandler {
         this.drawer = new CircleDrawer((x, y) -> g2.drawPixel(x, y, Color.BLACK));
     }
 
-    @Override public void onDragStarted(MouseEvent e) {
-        dragX0 = dragX1 = canvas.toPixelX(e.getX());
-        dragY0 = dragY1 = canvas.toPixelY(e.getY());
+    @Override public void startDrag(double mouseX, double mouseY) {
+        dragX0 = dragX1 = canvas.toPixelX(mouseX);
+        dragY0 = dragY1 = canvas.toPixelY(mouseY);
     }
 
     private Rectangle getCircleAreaByCapture(int x0, int y0, int x1, int y1) {
@@ -43,9 +42,9 @@ public class CircleDragHandler extends ShapeDragHandler {
         return Rectangle.squareOfSize(circleX0, circleY0, capture.w);
     }
 
-    @Override public void onDrag(MouseEvent e) {
-        int newDragX1 = canvas.toPixelX(e.getX());
-        int newDragY1 = canvas.toPixelY(e.getY());
+    @Override public void drag(double mouseX, double mouseY) {
+        int newDragX1 = canvas.toPixelX(mouseX);
+        int newDragY1 = canvas.toPixelY(mouseY);
         if (newDragX1 == dragX1 && newDragY1 == dragY1) {
             return;
         }

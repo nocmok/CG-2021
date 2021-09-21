@@ -7,10 +7,12 @@
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
           fx:controller="com.nocmok.opengl.primitives.controller.MainSceneController"
 >
-    <StackPane fx:id="customFrame" GridPane.columnIndex="0" GridPane.rowIndex="1" >
+    <StackPane fx:id="customFrame" alignment="CENTER" style="-fx-border-color: black" GridPane.columnIndex="0"
+               GridPane.rowIndex="1">
 
     </StackPane>
-    <StackPane fx:id="g2Frame" GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <StackPane fx:id="g2Frame" alignment="CENTER" style="-fx-border-color: black" GridPane.columnIndex="1"
+               GridPane.rowIndex="1">
 
     </StackPane>
     <columnConstraints>

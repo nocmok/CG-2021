@@ -1,11 +1,18 @@
 package com.nocmok.opengl.primitives.controller;
 
+import com.nocmok.opengl.primitives.controller.action.CircleDragHandler;
+import com.nocmok.opengl.primitives.controller.action.EllipseDragHandler;
 import com.nocmok.opengl.primitives.controller.action.G2CircleDragHandler;
+import com.nocmok.opengl.primitives.controller.action.G2EllipseDragHandler;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
+import com.nocmok.opengl.primitives.drawer.CircleDrawer;
+import com.nocmok.opengl.primitives.drawer.EllipseDrawer;
+import com.nocmok.opengl.primitives.drawer.LineDrawer;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 
 import java.awt.Color;
 import java.net.URL;
@@ -26,41 +33,25 @@ public class MainSceneController extends AbstractController {
         return root;
     }
 
-    @Override public void initialize(URL url, ResourceBundle resourceBundle) {
-        g2Canvas = new PixelatedCanvas(100, 140);
-        customCanvas = new PixelatedCanvas(100, 140);
-
-        g2Canvas.setWidth(500);
-        g2Canvas.setHeight(700);
-
-        customCanvas.setWidth(500);
-        customCanvas.setHeight(700);
-
-        // grag & drop
-
-        // line controller
-//        new G2LineDragHandler().attach(g2Canvas);
-//        new LineDragHandler().attach(customCanvas);
-
-        // circle controller
-        new G2CircleDragHandler().attach(g2Canvas);
-
-        g2Frame.getChildren().add(g2Canvas);
-        customFrame.getChildren().add(customCanvas);
-
-        drawFrame(g2Canvas);
-        drawFrame(customCanvas);
+    private int round(double size, int pixelSize) {
+        return (int) size - ((int)size) % pixelSize;
     }
 
-    // subject to delete
-    private void drawFrame(PixelatedCanvas canvas) {
-        var g2 = canvas.createGraphicsWrapper();
-        int x = canvas.getXSizeInPixels() - 1;
-        int y = canvas.getYSizeInPixels() - 1;
-        g2.drawLine(0, 0, x, 0, Color.BLACK);
-        g2.drawLine(0, 0, 0, y, Color.BLACK);
-        g2.drawLine(x, y, x, 0, Color.BLACK);
-        g2.drawLine(x, y, 0, y, Color.BLACK);
-        g2.flush();
+    @Override public void initialize(URL url, ResourceBundle resourceBundle) {
+        int pixelSize = 5;
+        var screen = Screen.getPrimary().getBounds();
+        double h = round(screen.getHeight(), pixelSize);
+        double w = round(screen.getWidth() / 2, pixelSize);
+        int pixelH = (int)(h / pixelSize);
+        int pixelW = (int)(w / pixelSize);
+
+        g2Canvas = new PixelatedCanvas(pixelW, pixelH);
+        customCanvas = new PixelatedCanvas(pixelW, pixelH);
+
+        g2Canvas.setWidth(w);
+        g2Canvas.setHeight(h);
+
+        customCanvas.setWidth(w);
+        customCanvas.setHeight(h);
     }
 }
