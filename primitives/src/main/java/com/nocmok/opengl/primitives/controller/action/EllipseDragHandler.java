@@ -49,8 +49,8 @@ public class EllipseDragHandler extends ShapeDragHandler {
 
         g2.fillRect(oldActualArea, Color.WHITE);
 
-        int xr = (newCapture.w + 1) / 2;
-        int yr = (newCapture.h + 1) / 2;
+        int xr = (newCapture.w) / 2;
+        int yr = (newCapture.h) / 2;
         int x0 = newCapture.x + xr;
         int y0 = newCapture.y + yr;
 
