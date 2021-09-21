@@ -8,11 +8,18 @@ import javafx.scene.paint.Color;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PixelatedCanvas extends Canvas {
 
-    private final int xPixels;
+    private static Map<Integer, Color> rgbCache;
 
+    static {
+        rgbCache = new HashMap<>();
+    }
+
+    private final int xPixels;
     private final int yPixels;
     private final BufferedImage grid;
 
@@ -156,11 +163,15 @@ public class PixelatedCanvas extends Canvas {
                 for (int y = rect.y; y <= rect.y2(); ++y) {
 
                     int rgb = image.getRGB(x, y);
-                    double r = ((rgb & (0x00ff0000)) >>> 16) / 255d;
-                    double g = ((rgb & (0x0000ff00)) >>> 8) / 255d;
-                    double b = ((rgb & (0x000000ff))) / 255d;
-
-                    canvas.setPixel(x, y, new Color(r, g, b, 1d));
+                    var color = rgbCache.get(rgb);
+                    if (color == null) {
+                        double r = ((rgb & (0x00ff0000)) >>> 16) / 255d;
+                        double g = ((rgb & (0x0000ff00)) >>> 8) / 255d;
+                        double b = ((rgb & (0x000000ff))) / 255d;
+                        color = new Color(r, g, b, 1d);
+                        rgbCache.put(rgb, color);
+                    }
+                    canvas.setPixel(x, y, color);
                 }
             }
             canvas.setDisable(false);
