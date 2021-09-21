@@ -14,33 +14,32 @@ public class CircleDrawer {
         int d = 0;
 
         while (y <= 0) {
-            grid.set(x0 + x, y0 + y); // 0 clockwise
-            grid.set(x0 + x, y0 - y); // 1
-            grid.set(x0 - x, y0 - y); // 2
-            grid.set(x0 - x, y0 + y); // 3
-
+            grid.set(x0 + x, y0 + y);
+            grid.set(x0 + x, y0 - y);
+            grid.set(x0 - x, y0 - y);
+            grid.set(x0 - x, y0 + y);
 
             int dd = d + 2 * x + 2 * y + 2;
-            int dh = d + 2 * x + 1;
-            int dv = d + 2 * y + 1;
 
             if (dd < 0) {
                 // inside
-                if(Math.abs(dd) < Math.abs(dh)) {
+                int dh = d + 2 * x + 1;
+                if (Math.abs(dd) < Math.abs(dh)) {
                     x += 1;
                     y += 1;
                     d = dd;
-                }else{
+                } else {
                     x += 1;
                     d = dh;
                 }
             } else if (dd > 0) {
                 // outside
-                if(Math.abs(dd) < Math.abs(dv)){
+                int dv = d + 2 * y + 1;
+                if (Math.abs(dd) < Math.abs(dv)) {
                     x += 1;
                     y += 1;
                     d = dd;
-                }else{
+                } else {
                     y += 1;
                     d = dv;
                 }
