@@ -29,8 +29,9 @@ public class PixelatedCanvas extends Canvas {
 
         this.grid = new BufferedImage(xPixels, yPixels, BufferedImage.TYPE_INT_RGB);
         //
+        var background = java.awt.Color.WHITE;
         var g2 = grid.createGraphics();
-        g2.setColor(java.awt.Color.WHITE);
+        g2.setColor(background);
         g2.fillRect(0, 0, xPixels, yPixels);
     }
 

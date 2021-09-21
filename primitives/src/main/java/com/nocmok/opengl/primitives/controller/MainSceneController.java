@@ -7,15 +7,17 @@ import com.nocmok.opengl.primitives.controller.action.G2EllipseDragHandler;
 import com.nocmok.opengl.primitives.controller.action.G2LineDragHandler;
 import com.nocmok.opengl.primitives.controller.action.LineDragHandler;
 import com.nocmok.opengl.primitives.controller.action.ShapeDragHandler;
+import com.nocmok.opengl.primitives.controller.action.Zoomer;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
-import com.nocmok.opengl.primitives.util.Rectangle;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
 import java.net.URL;
@@ -26,20 +28,24 @@ public class MainSceneController extends AbstractController {
     @FXML
     private GridPane root;
     @FXML
-    private StackPane customFrame;
+    private StackPane myFrame;
     @FXML
     private StackPane g2Frame;
     @FXML
     private HBox header;
+    @FXML
+    private Button zoomIn;
+    @FXML
+    private Button zoomOut;
+    @FXML
+    private ScrollPane g2Scroll;
+    @FXML
+    private ScrollPane myScroll;
     private PixelatedCanvas g2Canvas;
-    private PixelatedCanvas customCanvas;
+    private PixelatedCanvas myCanvas;
 
     @Override public Parent getRoot() {
         return root;
-    }
-
-    private int round(double size, int pixelSize) {
-        return (int) size - ((int) size) % pixelSize;
     }
 
     private void addDrawerButton(String name, ShapeDragHandler customHandler, ShapeDragHandler g2Handler) {
@@ -47,15 +53,15 @@ public class MainSceneController extends AbstractController {
         button.setText(name);
 
         button.setOnMouseClicked(ee -> {
-            customHandler.attach(customCanvas);
+            customHandler.attach(myCanvas);
             g2Handler.attach(g2Canvas);
 
-            customCanvas.setOnMousePressed(e -> {
+            myCanvas.setOnMousePressed(e -> {
                 customHandler.startDrag(e.getX(), e.getY());
                 g2Handler.startDrag(e.getX(), e.getY());
             });
 
-            customCanvas.setOnMouseDragged(e -> {
+            myCanvas.setOnMouseDragged(e -> {
                 customHandler.drag(e.getX(), e.getY());
                 g2Handler.drag(e.getX(), e.getY());
             });
@@ -65,28 +71,76 @@ public class MainSceneController extends AbstractController {
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
-        int pixelSize = 5;
+
+        int pixelSize = 2;
         var screen = Screen.getPrimary().getBounds();
-        double h = round(screen.getHeight(), pixelSize);
-        double w = round(screen.getWidth() / 2, pixelSize);
+
+        double h = ((int) screen.getHeight()) - ((int) screen.getHeight()) % pixelSize;
+        double w = ((int) screen.getWidth()) - ((int) screen.getWidth()) % pixelSize;
+
         int pixelH = (int) (h / pixelSize);
         int pixelW = (int) (w / pixelSize);
 
         g2Canvas = new PixelatedCanvas(pixelW, pixelH);
-        customCanvas = new PixelatedCanvas(pixelW, pixelH);
+        myCanvas = new PixelatedCanvas(pixelW, pixelH);
 
         g2Canvas.setWidth(w);
         g2Canvas.setHeight(h);
 
-        customCanvas.setWidth(w);
-        customCanvas.setHeight(h);
+        myCanvas.setWidth(w);
+        myCanvas.setHeight(h);
 
-        customFrame.getChildren().add(customCanvas);
+        g2Canvas.createGraphicsWrapper().flush();
+        myCanvas.createGraphicsWrapper().flush();
+
+        myFrame.getChildren().add(myCanvas);
         g2Frame.getChildren().add(g2Canvas);
 
         addDrawerButton("Line", new LineDragHandler(), new G2LineDragHandler());
         addDrawerButton("Circle", new CircleDragHandler(), new G2CircleDragHandler());
         addDrawerButton("Ellipse", new EllipseDragHandler(), new G2EllipseDragHandler());
 
+        g2Scroll.addEventFilter(ScrollEvent.SCROLL, e -> {
+            myScroll.setHvalue(myScroll.getHvalue() - e.getDeltaX() / myScroll.getWidth());
+            g2Scroll.setHvalue(g2Scroll.getHvalue() - e.getDeltaX() / g2Scroll.getWidth());
+            myScroll.setVvalue(myScroll.getVvalue() - e.getDeltaY() / myScroll.getHeight());
+            g2Scroll.setVvalue(g2Scroll.getVvalue() - e.getDeltaY() / g2Scroll.getHeight());
+            e.consume();
+        });
+        myScroll.addEventFilter(ScrollEvent.SCROLL, e -> {
+            myScroll.setHvalue(myScroll.getHvalue() - e.getDeltaX() / myScroll.getWidth());
+            g2Scroll.setHvalue(g2Scroll.getHvalue() - e.getDeltaX() / g2Scroll.getWidth());
+            myScroll.setVvalue(myScroll.getVvalue() - e.getDeltaY() / myScroll.getHeight());
+            g2Scroll.setVvalue(g2Scroll.getVvalue() - e.getDeltaY() / g2Scroll.getHeight());
+            e.consume();
+        });
+
+        var myZoom = new Zoomer(myCanvas);
+        var g2Zoom = new Zoomer(g2Canvas);
+
+        zoomIn.setOnMouseClicked(e -> {
+            var myHvalue = myScroll.getHvalue();
+            var myVvalue = myScroll.getVvalue();
+
+            myZoom.zoomIn();
+            g2Zoom.zoomIn();
+
+            myScroll.setHvalue(myHvalue);
+            myScroll.setVvalue(myVvalue);
+            g2Scroll.setHvalue(myHvalue);
+            g2Scroll.setVvalue(myVvalue);
+        });
+        zoomOut.setOnMouseClicked(e -> {
+            var myHvalue = myScroll.getHvalue();
+            var myVvalue = myScroll.getVvalue();
+
+            myZoom.zoomOut();
+            g2Zoom.zoomOut();
+
+            myScroll.setHvalue(myHvalue);
+            myScroll.setVvalue(myVvalue);
+            g2Scroll.setHvalue(myHvalue);
+            g2Scroll.setVvalue(myVvalue);
+        });
     }
 }
