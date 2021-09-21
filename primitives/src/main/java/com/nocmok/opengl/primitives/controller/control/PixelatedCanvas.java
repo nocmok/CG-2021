@@ -135,7 +135,7 @@ public class PixelatedCanvas extends Canvas {
             g2.fillRect(rect.x, rect.y, rect.w, rect.h);
         }
 
-        public void drawOval(int x, int y, int width, int height, java.awt.Color color) {
+        public void drawEllipse(int x, int y, int width, int height, java.awt.Color color) {
             g2.setColor(color);
             g2.drawOval(x, y, width, height);
         }
