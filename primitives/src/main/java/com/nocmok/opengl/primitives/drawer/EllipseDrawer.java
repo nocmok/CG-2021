@@ -1,7 +1,6 @@
 package com.nocmok.opengl.primitives.drawer;
 
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 
 public class EllipseDrawer {
 
@@ -11,18 +10,11 @@ public class EllipseDrawer {
         this.grid = grid;
     }
 
-    public void setPixelXY(int x, int y) {
-        grid.set(x, y);
-    }
-
-    public void setPixelYX(int y, int x) {
-        grid.set(x, y);
-    }
-
     public void drawEllipse(int x0, int y0, int xr, int yr) {
-        BiConsumer<Integer, Integer> setPixel = this::setPixelXY;
 
-        if(xr > yr){
+        BiConsumer<Integer, Integer> setPixel;
+
+        if (xr > yr) {
             int tmp;
             tmp = xr;
             xr = yr;
@@ -30,7 +22,9 @@ public class EllipseDrawer {
             tmp = x0;
             x0 = y0;
             y0 = tmp;
-            setPixel = this::setPixelYX;
+            setPixel = (x, y) -> grid.set(y, x);
+        } else {
+            setPixel = (x, y) -> grid.set(x, y);
         }
 
         int x = 0;
