@@ -53,26 +53,31 @@ public class MainSceneController extends AbstractController {
         return root;
     }
 
-    private void addDrawerButton(String name, ShapeDragHandler customHandler, ShapeDragHandler g2Handler) {
+    private void setCurrentDragHandlers(ShapeDragHandler myHandler, ShapeDragHandler g2Handler) {
+        myHandler.attach(myCanvas);
+        g2Handler.attach(g2Canvas);
+
+        myCanvas.setOnMousePressed(e -> {
+            myHandler.startDrag(e.getX(), e.getY());
+            g2Handler.startDrag(e.getX(), e.getY());
+        });
+
+        myCanvas.setOnMouseDragged(e -> {
+            myHandler.drag(e.getX(), e.getY());
+            g2Handler.drag(e.getX(), e.getY());
+        });
+    }
+
+    private Button addDrawerButton(String name, ShapeDragHandler myHandler, ShapeDragHandler g2Handler) {
         var button = new Button();
         button.setText(name);
 
         button.setOnMouseClicked(ee -> {
-            customHandler.attach(myCanvas);
-            g2Handler.attach(g2Canvas);
-
-            myCanvas.setOnMousePressed(e -> {
-                customHandler.startDrag(e.getX(), e.getY());
-                g2Handler.startDrag(e.getX(), e.getY());
-            });
-
-            myCanvas.setOnMouseDragged(e -> {
-                customHandler.drag(e.getX(), e.getY());
-                g2Handler.drag(e.getX(), e.getY());
-            });
+            setCurrentDragHandlers(myHandler, g2Handler);
         });
 
         header.getChildren().add(button);
+        return button;
     }
 
     private String getAboutMessage() {
@@ -113,6 +118,8 @@ public class MainSceneController extends AbstractController {
         addDrawerButton("Line", new LineDragHandler(), new G2LineDragHandler());
         addDrawerButton("Circle", new CircleDragHandler(), new G2CircleDragHandler());
         addDrawerButton("Ellipse", new EllipseDragHandler(), new G2EllipseDragHandler());
+
+        setCurrentDragHandlers(new LineDragHandler(), new G2LineDragHandler());
 
         g2Scroll.addEventFilter(ScrollEvent.SCROLL, e -> {
             myScroll.setHvalue(myScroll.getHvalue() - e.getDeltaX() / myScroll.getWidth());
