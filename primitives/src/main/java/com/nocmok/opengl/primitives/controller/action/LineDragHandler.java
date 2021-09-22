@@ -26,7 +26,7 @@ public class LineDragHandler extends ShapeDragHandler {
         super.attach(canvas);
         this.canvas = canvas;
         this.g2 = canvas.createGraphicsWrapper();
-        this.drawer = new LineDrawer((x, y) -> g2.drawPixel(x, y, Color.ORANGE));
+        this.drawer = new LineDrawer((x, y) -> g2.drawPixel(x, y, Color.BLACK));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {

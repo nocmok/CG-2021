@@ -86,7 +86,7 @@ public class MainSceneController extends AbstractController {
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        int pixelSize = 2;
+        int pixelSize = 4;
         var screen = Screen.getPrimary().getBounds();
 
         double h = ((int) screen.getHeight()) - ((int) screen.getHeight()) % pixelSize;
