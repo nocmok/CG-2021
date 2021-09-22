@@ -52,8 +52,8 @@ public class CircleDragHandler extends ShapeDragHandler {
         var oldCircleArea = getCircleAreaByCapture(dragX0, dragY0, dragX1, dragY1);
         var newCircleArea = getCircleAreaByCapture(dragX0, dragY0, newDragX1, newDragY1);
 
-        var oldActualArea = Rectangle.squareOfSize(oldCircleArea.x, oldCircleArea.y, oldCircleArea.w + 1);
-        var newActualArea = Rectangle.squareOfSize(newCircleArea.x, newCircleArea.y, newCircleArea.w + 1);
+        var oldActualArea = Rectangle.squareOfSize(oldCircleArea.x, oldCircleArea.y, oldCircleArea.w + 2);
+        var newActualArea = Rectangle.squareOfSize(newCircleArea.x, newCircleArea.y, newCircleArea.w + 2);
 
         g2.fillRect(oldActualArea, Color.WHITE);
         int r = (newCircleArea.w + 1) / 2;
