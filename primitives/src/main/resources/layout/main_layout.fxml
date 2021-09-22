@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
           fx:controller="com.nocmok.opengl.primitives.controller.MainSceneController"
 >
@@ -70,6 +71,13 @@
         </Group>
     </ScrollPane>
 
+    <Label GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-size: 15;">
+        Bresenham's algorithm
+    </Label>
+    <Label GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-size: 15;">
+        java.awt.Graphics2D
+    </Label>
+
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
         <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
@@ -78,5 +86,6 @@
     <rowConstraints>
         <RowConstraints vgrow="NEVER" minHeight="50" valignment="CENTER"/>
         <RowConstraints vgrow="ALWAYS" valignment="CENTER"/>
+        <RowConstraints vgrow="NEVER" minHeight="50" valignment="CENTER"/>
     </rowConstraints>
 </GridPane>

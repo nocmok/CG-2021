@@ -1,5 +1,7 @@
-Copyright (C) 2021 by Nikolay Safonov nyusafonov@yandex.ru
+Студент: Сафонов Николай
+Группа: БПИ185
+Год: 2021
 
-Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
+Программа демонстрирует работу трех алгоритмов для построения примитивов графики на основе алгоритма Брезенхема для отрезка и окружности. Слева рисуют самодельные алгоритмы. Код с алгоритмами находится в пакете com.nocmok.opengl.primitives.drawer. Справа рисуют алгоритмы из java.awt.Graphics2D https://docs.oracle.com/en/java/javase/15/docs/api/java.desktop/java/awt/Graphics2D.html
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
+Программа написана на языке java 11 с использованием библиотеки для построения клиентских приложений javafx 17. Для сборки использовался gradle 7.2. Программа разрабатывалась в IntelliJ IDEA Community

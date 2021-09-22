@@ -83,7 +83,7 @@ public class MainSceneController extends AbstractController {
     private String getAboutMessage() {
         try {
             var in = getClass().getClassLoader().getResourceAsStream("About.txt");
-            return in == null ? null : new String(in.readAllBytes(), StandardCharsets.US_ASCII);
+            return in == null ? null : new String(in.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException ignore) {
         }
         return null;
@@ -168,7 +168,7 @@ public class MainSceneController extends AbstractController {
         about.setOnMouseClicked(e -> {
             var alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("About this program");
-            alert.setHeaderText("About this program");
+            alert.setHeaderText(null);
             alert.setContentText(aboutMessage);
             alert.showAndWait();
         });
