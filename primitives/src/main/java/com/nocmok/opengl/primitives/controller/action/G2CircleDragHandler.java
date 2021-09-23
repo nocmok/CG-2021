@@ -35,7 +35,7 @@ public class G2CircleDragHandler extends ShapeDragHandler {
         var radius = (capture.w + 1) / 2;
         int circleX0 = capture.x;
         int circleY0 = y0 - radius;
-        return Rectangle.squareOfSize(circleX0, circleY0, capture.w);
+        return Rectangle.squareOfSize(circleX0, circleY0, (capture.w + 1) & 0xfffffffe);
     }
 
     @Override public void drag(double mouseX, double mouseY) {

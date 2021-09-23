@@ -31,7 +31,8 @@ public class G2EllipseDragHandler extends ShapeDragHandler {
     }
 
     private Rectangle getEllipseAreaByCapture(int x0, int y0, int x1, int y1) {
-        return Rectangle.ofPoints(x0, y0, x1, y1);
+        var capture = Rectangle.ofPoints(x0, y0, x1, y1);
+        return Rectangle.ofSize(capture.x, capture.y, capture.w & 0xfffffffe, capture.h & 0xfffffffe);
     }
 
     @Override public void drag(double mouseX, double mouseY) {
@@ -50,7 +51,8 @@ public class G2EllipseDragHandler extends ShapeDragHandler {
                 Rectangle.ofSize(newEllipseArea.x, newEllipseArea.y, newEllipseArea.w + 1, newEllipseArea.h + 1);
 
         g2.fillRect(oldActualArea, Color.WHITE);
-        g2.drawEllipse(newEllipseArea.x, newEllipseArea.y, newEllipseArea.w, newEllipseArea.h, Color.BLACK);
+        g2.drawEllipse(newEllipseArea.x, newEllipseArea.y, newEllipseArea.w, newEllipseArea.h,
+                Color.BLACK);
         g2.flushRect(oldActualArea.add(newActualArea));
 
         dragX1 = newDragX1;
