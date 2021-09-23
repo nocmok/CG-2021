@@ -9,12 +9,8 @@ import java.net.URL;
 
 public abstract class AbstractController implements Initializable {
 
-    public static URL getLayout(String layoutName) {
-        return AbstractController.class.getClassLoader().getResource("layout/" + layoutName);
-    }
-
-    public static <T extends AbstractController> T getNewController(String layoutName) throws IOException {
-        var loader = new FXMLLoader(getLayout(layoutName));
+    public static <T extends AbstractController> T getNewController(URL layout) throws IOException {
+        var loader = new FXMLLoader(layout);
         loader.load();
         return loader.getController();
     }

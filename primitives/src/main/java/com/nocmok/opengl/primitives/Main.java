@@ -11,12 +11,13 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 
     @Override
     public void start(Stage stage) throws IOException {
-        var controller = AbstractController.<MainSceneController>getNewController("main_layout.fxml");
+        var controller = AbstractController
+                .<MainSceneController>getNewController(getClass().getResource("layout/main_layout.fxml"));
         stage.setWidth(800);
         stage.setHeight(600);
         stage.setScene(new Scene(controller.getRoot()));

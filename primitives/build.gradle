@@ -1,6 +1,7 @@
 plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'org.beryx.jlink' version '2.24.2'
 }
 
 repositories {
@@ -10,11 +11,10 @@ repositories {
 dependencies {
 }
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
 }
 
 javafx {
@@ -41,10 +41,17 @@ sourceSets {
 processResources.duplicatesStrategy(DuplicatesStrategy.WARN)
 
 application {
-    mainClass = 'com.nocmok.opengl.primitives.Main'
+    mainModule = 'primitives_demo'
+    mainClass = 'com.nocmok.opengl.primitives.Launcher'
 }
 
 run {
     standardInput = System.in
     standardOutput = System.out
+}
+
+jlink {
+    launcher{
+        name = 'primitives-demo'
+    }
 }

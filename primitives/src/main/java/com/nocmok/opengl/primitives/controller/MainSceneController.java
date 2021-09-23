@@ -82,7 +82,7 @@ public class MainSceneController extends AbstractController {
 
     private String getAboutMessage() {
         try {
-            var in = getClass().getClassLoader().getResourceAsStream("About.txt");
+            var in = getClass().getClassLoader().getResourceAsStream("com/nocmok/opengl/primitives/About.txt");
             return in == null ? null : new String(in.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException ignore) {
         }
