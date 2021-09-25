@@ -28,9 +28,6 @@ public class PixelatedCanvas extends Canvas {
         this.xPixels = xPixels;
         this.yPixels = yPixels;
         this.colors = new int[yPixels][xPixels];
-        for (int y = 0; y < yPixels; ++y) {
-            Arrays.fill(colors[y], 0x00ffffff);
-        }
     }
 
     private static int colorToRGB(Color color) {
@@ -118,10 +115,17 @@ public class PixelatedCanvas extends Canvas {
 
     public void fillRect(Rectangle rect, javafx.scene.paint.Color color) {
         rect = clamp(rect);
+
         var gc = super.getGraphicsContext2D();
         var start = getPixelCoordinates(rect.x, rect.y);
+
         gc.setFill(color);
         gc.fillRect(start.x, start.y, rect.w * getPixelXSize(), rect.h * getPixelXSize());
+
+        int rgb = colorToRGB(color);
+        for (int y = rect.y; y <= rect.y2(); ++y) {
+            Arrays.fill(colors[y], rect.x, rect.x2() + 1, rgb);
+        }
     }
 
     public void fillRect(int x, int y, int width, int height, javafx.scene.paint.Color color) {

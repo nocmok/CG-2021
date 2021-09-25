@@ -27,6 +27,9 @@
             <Button fx:id="zoomOut">
                 -
             </Button>
+            <Button fx:id="clear">
+                clear
+            </Button>
         </HBox>
         <HBox spacing="5" GridPane.columnIndex="2" alignment="CENTER_RIGHT">
             <Button fx:id="about">

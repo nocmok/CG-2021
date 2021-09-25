@@ -37,6 +37,8 @@ public class MainSceneController extends AbstractController {
     @FXML
     private Button zoomOut;
     @FXML
+    private Button clear;
+    @FXML
     private ScrollPane myScroll;
     @FXML
     private Button about;
@@ -133,6 +135,10 @@ public class MainSceneController extends AbstractController {
 
             myScroll.setHvalue(myHvalue);
             myScroll.setVvalue(myVvalue);
+        });
+
+        clear.setOnMouseClicked(e -> {
+            myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
         });
 
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
