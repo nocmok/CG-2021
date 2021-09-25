@@ -6,6 +6,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,9 @@ public class PixelatedCanvas extends Canvas {
         this.xPixels = xPixels;
         this.yPixels = yPixels;
         this.colors = new int[yPixels][xPixels];
+        for (int y = 0; y < yPixels; ++y) {
+            Arrays.fill(colors[y], 0x00ffffff);
+        }
     }
 
     private static int colorToRGB(Color color) {
@@ -94,6 +98,10 @@ public class PixelatedCanvas extends Canvas {
 
     public int getRGB(int x, int y) {
         return colors[y][x];
+    }
+
+    public Color getColor(int x, int y) {
+        return rgbToColor(colors[y][x]);
     }
 
     private int clamp(int value, int minInclusive, int maxInclusive) {

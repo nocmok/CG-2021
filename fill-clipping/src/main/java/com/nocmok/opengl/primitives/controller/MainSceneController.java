@@ -56,6 +56,10 @@ public class MainSceneController extends AbstractController {
         myCanvas.setOnMouseDragged(e -> {
             myHandler.drag(e.getX(), e.getY());
         });
+
+        myCanvas.setOnMouseReleased(e -> {
+            myHandler.stopDrag(e.getX(), e.getY());
+        });
     }
 
     private Button addDrawerButton(String name, ShapeDragHandler myHandler) {

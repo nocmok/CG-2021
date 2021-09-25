@@ -2,7 +2,6 @@ package com.nocmok.opengl.primitives.controller.action;
 
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.primitives.drawer.LineDrawer;
-import com.nocmok.opengl.primitives.util.Rectangle;
 import javafx.scene.paint.Color;
 
 public class LineDragHandler extends ShapeDragHandler {
@@ -10,6 +9,10 @@ public class LineDragHandler extends ShapeDragHandler {
     private PixelatedCanvas canvas;
 
     private LineDrawer drawer;
+
+    private LineDrawer cleaner;
+
+    private LineDrawer flusher;
 
     private int dragX0;
 
@@ -22,7 +25,9 @@ public class LineDragHandler extends ShapeDragHandler {
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
         this.canvas = canvas;
-        this.drawer = new LineDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
+        this.drawer = new LineDrawer((x, y) -> canvas.drawPixel(x, y, Color.ROYALBLUE));
+        this.cleaner = new LineDrawer((x, y) -> canvas.drawPixel(x, y, canvas.getColor(x, y)));
+        this.flusher = new LineDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {
@@ -37,12 +42,14 @@ public class LineDragHandler extends ShapeDragHandler {
             return;
         }
 
-        var areaToClear = Rectangle.ofPoints(dragX0, dragY0, dragX1, dragY1);
-
-        canvas.fillRect(areaToClear, Color.WHITE);
+        cleaner.drawLine(dragX0, dragY0, dragX1, dragY1);
         drawer.drawLine(dragX0, dragY0, newDragX1, newDragY1);
 
         dragX1 = newDragX1;
         dragY1 = newDragY1;
+    }
+
+    @Override public void stopDrag(double mouseX, double mouseY) {
+        flusher.drawLine(dragX0, dragY0, dragX1, dragY1);
     }
 }

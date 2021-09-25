@@ -11,6 +11,10 @@ public class EllipseDragHandler extends ShapeDragHandler {
 
     private EllipseDrawer drawer;
 
+    private EllipseDrawer cleaner;
+
+    private EllipseDrawer flusher;
+
     private int dragX0;
 
     private int dragY0;
@@ -22,12 +26,25 @@ public class EllipseDragHandler extends ShapeDragHandler {
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
         this.canvas = canvas;
-        this.drawer = new EllipseDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
+        this.drawer = new EllipseDrawer((x, y) -> canvas.drawPixel(x, y, Color.ROYALBLUE));
+        this.cleaner = new EllipseDrawer((x, y) -> canvas.drawPixel(x, y, canvas.getColor(x, y)));
+        this.flusher = new EllipseDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {
         dragX0 = dragX1 = canvas.toPixelX(mouseX);
         dragY0 = dragY1 = canvas.toPixelY(mouseY);
+    }
+
+    private void drawEllipse(EllipseDrawer drawer, int cx0, int cy0, int cx1, int cy1) {
+        var capture = Rectangle.ofPoints(cx0, cy0, cx1, cy1);
+
+        int xr = (capture.w) / 2;
+        int yr = (capture.h) / 2;
+        int x0 = capture.x + xr;
+        int y0 = capture.y + yr;
+
+        drawer.drawEllipse(x0, y0, xr, yr);
     }
 
     @Override public void drag(double mouseX, double mouseY) {
@@ -37,21 +54,14 @@ public class EllipseDragHandler extends ShapeDragHandler {
             return;
         }
 
-        var oldCapture = Rectangle.ofPoints(dragX0, dragY0, dragX1, dragY1);
-        var newCapture = Rectangle.ofPoints(dragX0, dragY0, newDragX1, newDragY1);
-
-        var oldActualArea = Rectangle.ofSize(oldCapture.x, oldCapture.y, oldCapture.w + 2, oldCapture.h + 2);
-
-        canvas.fillRect(oldActualArea, Color.WHITE);
-
-        int xr = (newCapture.w) / 2;
-        int yr = (newCapture.h) / 2;
-        int x0 = newCapture.x + xr;
-        int y0 = newCapture.y + yr;
-
-        drawer.drawEllipse(x0, y0, xr, yr);
+        drawEllipse(cleaner, dragX0, dragY0, dragX1, dragY1);
+        drawEllipse(drawer, dragX0, dragY0, newDragX1, newDragY1);
 
         dragX1 = newDragX1;
         dragY1 = newDragY1;
+    }
+
+    @Override public void stopDrag(double mouseX, double mouseY) {
+        drawEllipse(flusher, dragX0, dragY0, dragX1, dragY1);
     }
 }
