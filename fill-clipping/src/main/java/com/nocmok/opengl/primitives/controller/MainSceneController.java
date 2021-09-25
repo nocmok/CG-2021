@@ -15,6 +15,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
 import java.io.IOException;
@@ -94,8 +95,7 @@ public class MainSceneController extends AbstractController {
         myCanvas.setWidth(w);
         myCanvas.setHeight(h);
 
-        myCanvas.createGraphicsWrapper().flush();
-
+        myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
         myFrame.getChildren().add(myCanvas);
 
         addDrawerButton("Line", new LineDragHandler());

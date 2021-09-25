@@ -3,14 +3,11 @@ package com.nocmok.opengl.primitives.controller.action;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.primitives.drawer.CircleDrawer;
 import com.nocmok.opengl.primitives.util.Rectangle;
-
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public class CircleDragHandler extends ShapeDragHandler {
 
     private PixelatedCanvas canvas;
-
-    private PixelatedCanvas.Graphics2DWrapper g2;
 
     private CircleDrawer drawer;
 
@@ -25,8 +22,7 @@ public class CircleDragHandler extends ShapeDragHandler {
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
         this.canvas = canvas;
-        this.g2 = canvas.createGraphicsWrapper();
-        this.drawer = new CircleDrawer((x, y) -> g2.drawPixel(x, y, Color.BLACK));
+        this.drawer = new CircleDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {
@@ -53,12 +49,10 @@ public class CircleDragHandler extends ShapeDragHandler {
         var newCircleArea = getCircleAreaByCapture(dragX0, dragY0, newDragX1, newDragY1);
 
         var oldActualArea = Rectangle.squareOfSize(oldCircleArea.x, oldCircleArea.y, oldCircleArea.w + 2);
-        var newActualArea = Rectangle.squareOfSize(newCircleArea.x, newCircleArea.y, newCircleArea.w + 2);
 
-        g2.fillRect(oldActualArea, Color.WHITE);
+        canvas.fillRect(oldActualArea, Color.WHITE);
         int r = (newCircleArea.w + 1) / 2;
         drawer.drawCircle(newCircleArea.x + r, newCircleArea.y + r, r);
-        g2.flushRect(oldActualArea.add(newActualArea));
 
         dragX1 = newDragX1;
         dragY1 = newDragY1;

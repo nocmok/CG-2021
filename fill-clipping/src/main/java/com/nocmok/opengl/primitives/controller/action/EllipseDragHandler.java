@@ -3,14 +3,11 @@ package com.nocmok.opengl.primitives.controller.action;
 import com.nocmok.opengl.primitives.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.primitives.drawer.EllipseDrawer;
 import com.nocmok.opengl.primitives.util.Rectangle;
-
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public class EllipseDragHandler extends ShapeDragHandler {
 
     private PixelatedCanvas canvas;
-
-    private PixelatedCanvas.Graphics2DWrapper g2;
 
     private EllipseDrawer drawer;
 
@@ -25,8 +22,7 @@ public class EllipseDragHandler extends ShapeDragHandler {
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
         this.canvas = canvas;
-        this.g2 = canvas.createGraphicsWrapper();
-        this.drawer = new EllipseDrawer((x, y) -> g2.drawPixel(x, y, Color.BLACK));
+        this.drawer = new EllipseDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {
@@ -45,9 +41,8 @@ public class EllipseDragHandler extends ShapeDragHandler {
         var newCapture = Rectangle.ofPoints(dragX0, dragY0, newDragX1, newDragY1);
 
         var oldActualArea = Rectangle.ofSize(oldCapture.x, oldCapture.y, oldCapture.w + 2, oldCapture.h + 2);
-        var newActualArea = Rectangle.ofSize(newCapture.x, newCapture.y, newCapture.w + 2, newCapture.h + 2);
 
-        g2.fillRect(oldActualArea, Color.WHITE);
+        canvas.fillRect(oldActualArea, Color.WHITE);
 
         int xr = (newCapture.w) / 2;
         int yr = (newCapture.h) / 2;
@@ -55,7 +50,6 @@ public class EllipseDragHandler extends ShapeDragHandler {
         int y0 = newCapture.y + yr;
 
         drawer.drawEllipse(x0, y0, xr, yr);
-        g2.flushRect(oldActualArea.add(newActualArea));
 
         dragX1 = newDragX1;
         dragY1 = newDragY1;
