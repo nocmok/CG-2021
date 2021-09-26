@@ -30,6 +30,9 @@
             <Button fx:id="clear">
                 clear
             </Button>
+            <Button fx:id="fill">
+                fill
+            </Button>
         </HBox>
         <HBox spacing="5" GridPane.columnIndex="2" alignment="CENTER_RIGHT">
             <Button fx:id="about">

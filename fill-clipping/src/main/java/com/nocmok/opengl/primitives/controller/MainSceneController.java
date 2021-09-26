@@ -2,6 +2,7 @@ package com.nocmok.opengl.primitives.controller;
 
 import com.nocmok.opengl.primitives.controller.action.CircleDragHandler;
 import com.nocmok.opengl.primitives.controller.action.EllipseDragHandler;
+import com.nocmok.opengl.primitives.controller.action.FillHandler;
 import com.nocmok.opengl.primitives.controller.action.LineDragHandler;
 import com.nocmok.opengl.primitives.controller.action.ShapeDragHandler;
 import com.nocmok.opengl.primitives.controller.action.Zoomer;
@@ -38,6 +39,8 @@ public class MainSceneController extends AbstractController {
     private Button zoomOut;
     @FXML
     private Button clear;
+    @FXML
+    private Button fill;
     @FXML
     private ScrollPane myScroll;
     @FXML
@@ -139,6 +142,15 @@ public class MainSceneController extends AbstractController {
 
         clear.setOnMouseClicked(e -> {
             myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+        });
+
+        fill.setOnMouseClicked(ee -> {
+            var filler = new FillHandler(myCanvas, Color.ORANGE);
+            myCanvas.setOnMousePressed(e -> {
+                filler.fill(e.getX(), e.getY());
+            });
+            myCanvas.setOnMouseDragged(null);
+            myCanvas.setOnMouseReleased(null);
         });
 
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
