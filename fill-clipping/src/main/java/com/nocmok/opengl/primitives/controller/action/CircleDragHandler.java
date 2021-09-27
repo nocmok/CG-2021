@@ -26,9 +26,9 @@ public class CircleDragHandler extends ShapeDragHandler {
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
         this.canvas = canvas;
-        this.drawer = new CircleDrawer((x, y) -> canvas.drawPixel(x, y, Color.ROYALBLUE));
+        this.drawer = new CircleDrawer((x, y) -> canvas.drawPixel(x, y, Color.BLACK));
         this.cleaner = new CircleDrawer((x, y) -> canvas.drawPixel(x, y, canvas.getColor(x, y)));
-        this.flusher = new CircleDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
+        this.flusher = new CircleDrawer((x, y) -> canvas.setPixel(x, y, Color.BLACK));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {

@@ -26,9 +26,9 @@ public class EllipseDragHandler extends ShapeDragHandler {
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
         this.canvas = canvas;
-        this.drawer = new EllipseDrawer((x, y) -> canvas.drawPixel(x, y, Color.ROYALBLUE));
+        this.drawer = new EllipseDrawer((x, y) -> canvas.drawPixel(x, y, Color.BLACK));
         this.cleaner = new EllipseDrawer((x, y) -> canvas.drawPixel(x, y, canvas.getColor(x, y)));
-        this.flusher = new EllipseDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
+        this.flusher = new EllipseDrawer((x, y) -> canvas.setPixel(x, y, Color.BLACK));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {

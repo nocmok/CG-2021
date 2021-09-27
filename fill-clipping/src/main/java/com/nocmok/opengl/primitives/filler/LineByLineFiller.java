@@ -35,7 +35,6 @@ public class LineByLineFiller {
             for (int c = x; c < grid.xSize() && grid.get(c, y) == color; ++c) {
                 grid.set(c, y);
                 filled[y][c] = true;
-
                 for (int r : List.of(y + 1, y - 1)) {
                     if (getColor(c, r) == color) {
                         int[] prev = stack.peek();

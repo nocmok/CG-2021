@@ -770,11 +770,6 @@
     -fx-background-color: black;
 }
 
-/* More color picker */
-.color-picker .color-picker-label{
-    -fx-background-color: white;
-}
-
 /* Outline btn */
 
 .outline-button{
@@ -1235,3 +1230,44 @@
     -fx-border-radius: 5;
     -fx-border-color: black;
 }
+
+
+/* ColorPicker */
+.color-picker {
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+    -fx-text-alignment: CENTER;
+    -fx-min-width: 80px;
+    -fx-min-height: 32px;
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-radius: 2px;
+}
+
+.color-picker:focused {
+    -fx-border-width: 1.3px;
+}
+
+.color-picker:hover {
+    -fx-background-color: rgb(243, 242, 241);
+}
+
+.color-picker:pressed {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
+}
+
+/* Default Button */
+.color-picker:default {
+    -fx-background-color: rgb(18, 122, 214);
+    -fx-text-fill: white;
+    -fx-border-width: 0px;
+}
+
+.color-picker:default:hover {
+    -fx-background-color: rgb(16, 110, 190);
+}
+
+.color-picker:default:focused {}

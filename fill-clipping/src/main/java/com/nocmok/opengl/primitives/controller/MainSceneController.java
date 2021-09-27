@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
@@ -42,6 +43,8 @@ public class MainSceneController extends AbstractController {
     @FXML
     private Button fill;
     @FXML
+    private ColorPicker colorPicker;
+    @FXML
     private ScrollPane myScroll;
     @FXML
     private Button about;
@@ -65,6 +68,14 @@ public class MainSceneController extends AbstractController {
         myCanvas.setOnMouseReleased(e -> {
             myHandler.stopDrag(e.getX(), e.getY());
         });
+    }
+
+    private void setCurrentFiller(FillHandler filler) {
+        myCanvas.setOnMousePressed(e -> {
+            filler.fill(e.getX(), e.getY());
+        });
+        myCanvas.setOnMouseDragged(null);
+        myCanvas.setOnMouseReleased(null);
     }
 
     private Button addDrawerButton(String name, ShapeDragHandler myHandler) {
@@ -145,12 +156,11 @@ public class MainSceneController extends AbstractController {
         });
 
         fill.setOnMouseClicked(ee -> {
-            var filler = new FillHandler(myCanvas, Color.ORANGE);
-            myCanvas.setOnMousePressed(e -> {
-                filler.fill(e.getX(), e.getY());
-            });
-            myCanvas.setOnMouseDragged(null);
-            myCanvas.setOnMouseReleased(null);
+            setCurrentFiller(new FillHandler(myCanvas, colorPicker.getValue()));
+        });
+
+        colorPicker.setOnAction(ee -> {
+            setCurrentFiller(new FillHandler(myCanvas, colorPicker.getValue()));
         });
 
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");

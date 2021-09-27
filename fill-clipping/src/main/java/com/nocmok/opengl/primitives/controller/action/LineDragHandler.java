@@ -25,9 +25,9 @@ public class LineDragHandler extends ShapeDragHandler {
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
         this.canvas = canvas;
-        this.drawer = new LineDrawer((x, y) -> canvas.drawPixel(x, y, Color.ROYALBLUE));
+        this.drawer = new LineDrawer((x, y) -> canvas.drawPixel(x, y, Color.BLACK));
         this.cleaner = new LineDrawer((x, y) -> canvas.drawPixel(x, y, canvas.getColor(x, y)));
-        this.flusher = new LineDrawer((x, y) -> canvas.setPixel(x, y, Color.ROYALBLUE));
+        this.flusher = new LineDrawer((x, y) -> canvas.setPixel(x, y, Color.BLACK));
     }
 
     @Override public void startDrag(double mouseX, double mouseY) {
