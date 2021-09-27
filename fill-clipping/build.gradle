@@ -41,8 +41,8 @@ sourceSets {
 processResources.duplicatesStrategy(DuplicatesStrategy.WARN)
 
 application {
-    mainModule = 'primitives_demo'
-    mainClass = 'com.nocmok.opengl.primitives.Launcher'
+    mainModule = 'com.nocmok.opengl.fillclip'
+    mainClass = 'com.nocmok.opengl.fillclip.Launcher'
 }
 
 run {
@@ -52,6 +52,6 @@ run {
 
 jlink {
     launcher{
-        name = 'primitives-demo'
+        name = 'run-application'
     }
 }
