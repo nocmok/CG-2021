@@ -58,6 +58,8 @@ public class PolygonFiller {
                 var nextLine = getNextLine.apply(line);
 
                 if (line.y1 == line.y2) {
+                    lineDrawer.drawLine(line.x1, y, line.x2, y);
+
                     if (getLineSlope.apply(prevLine).equals(getLineSlope.apply(nextLine))) {
                         if (points.isEmpty()) {
                             removeLastPoint = true;

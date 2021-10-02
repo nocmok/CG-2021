@@ -42,9 +42,9 @@ public class MainSceneController extends AbstractController {
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         var dfsFillingDemoController = AbstractController.<DfsFillingDemoController>getNewController(
                 getLayoutUri("dfs_filling_demo_layout.fxml"));
-        var polygonFillingDemoController = AbstractController.<DfsFillingDemoController>getNewController(
+        var polygonFillingDemoController = AbstractController.<PolygonFillingDemoController>getNewController(
                 getLayoutUri("polygon_filling_demo_layout.fxml"));
-        var clippingDemoController = AbstractController.<DfsFillingDemoController>getNewController(
+        var clippingDemoController = AbstractController.<ClippingDemoController>getNewController(
                 getLayoutUri("clipping_demo_layout.fxml"));
 
         dfsFillingDemo.setOnMouseClicked(e -> selectDemo(dfsFillingDemoController));

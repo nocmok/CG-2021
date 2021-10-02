@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
-          fx:controller="com.nocmok.opengl.fillclip.controller.DfsFillingDemoController">
+          fx:controller="com.nocmok.opengl.fillclip.controller.PolygonFillingDemoController">
     <padding>
         <Insets left="20" top="20" right="20" bottom="20">
 
@@ -29,9 +29,6 @@
             </Button>
             <Button fx:id="clear">
                 clear
-            </Button>
-            <Button fx:id="fill">
-                fill
             </Button>
             <ColorPicker fx:id="colorPicker">
 

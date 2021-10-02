@@ -1,9 +1,6 @@
 package com.nocmok.opengl.fillclip.controller;
 
-import com.nocmok.opengl.fillclip.controller.action.CircleDragHandler;
-import com.nocmok.opengl.fillclip.controller.action.EllipseDragHandler;
-import com.nocmok.opengl.fillclip.controller.action.FillHandler;
-import com.nocmok.opengl.fillclip.controller.action.LineDragHandler;
+import com.nocmok.opengl.fillclip.controller.action.PolygonFillHandler;
 import com.nocmok.opengl.fillclip.controller.action.ShapeDragHandler;
 import com.nocmok.opengl.fillclip.controller.action.Zoomer;
 import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
@@ -42,8 +39,6 @@ public class PolygonFillingDemoController extends AbstractController {
     @FXML
     private Button clear;
     @FXML
-    private Button fill;
-    @FXML
     private ColorPicker colorPicker;
     @FXML
     private ScrollPane myScroll;
@@ -71,26 +66,6 @@ public class PolygonFillingDemoController extends AbstractController {
         });
     }
 
-    private void setCurrentFiller(FillHandler filler) {
-        myCanvas.setOnMousePressed(e -> {
-            filler.fill(e.getX(), e.getY());
-        });
-        myCanvas.setOnMouseDragged(null);
-        myCanvas.setOnMouseReleased(null);
-    }
-
-    private Button addDrawerButton(String name, ShapeDragHandler myHandler) {
-        var button = new Button();
-        button.setText(name);
-
-        button.setOnMouseClicked(ee -> {
-            setCurrentDragHandlers(myHandler);
-        });
-
-        header.getChildren().add(button);
-        return button;
-    }
-
     private String getAboutMessage() {
         try {
             var in = getClass().getClassLoader().getResourceAsStream("About.txt");
@@ -98,6 +73,12 @@ public class PolygonFillingDemoController extends AbstractController {
         } catch (IOException ignore) {
         }
         return null;
+    }
+
+    private void setCurrentPolygonFiller(PolygonFillHandler filler) {
+        myCanvas.setOnMouseClicked(e -> {
+            filler.newPoint(e.getX(), e.getY());
+        });
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -118,12 +99,6 @@ public class PolygonFillingDemoController extends AbstractController {
 
         myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
         myFrame.getChildren().add(myCanvas);
-
-        addDrawerButton("Line", new LineDragHandler());
-        addDrawerButton("Circle", new CircleDragHandler());
-        addDrawerButton("Ellipse", new EllipseDragHandler());
-
-        setCurrentDragHandlers(new LineDragHandler());
 
         myScroll.addEventFilter(ScrollEvent.SCROLL, e -> {
             myScroll.setHvalue(myScroll.getHvalue() - e.getDeltaX() / myScroll.getWidth());
@@ -154,15 +129,13 @@ public class PolygonFillingDemoController extends AbstractController {
 
         clear.setOnMouseClicked(e -> {
             myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
-        });
-
-        fill.setOnMouseClicked(ee -> {
-            setCurrentFiller(new FillHandler(myCanvas, colorPicker.getValue()));
+            setCurrentPolygonFiller(new PolygonFillHandler(myCanvas, Color.ROYALBLUE));
         });
 
         colorPicker.setOnAction(ee -> {
-            setCurrentFiller(new FillHandler(myCanvas, colorPicker.getValue()));
+            // TODO
         });
+        setCurrentPolygonFiller(new PolygonFillHandler(myCanvas, Color.ROYALBLUE));
 
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
         about.setOnMouseClicked(e -> {
