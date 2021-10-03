@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
-          fx:controller="com.nocmok.opengl.fillclip.controller.DfsFillingDemoController">
+          fx:controller="com.nocmok.opengl.fillclip.controller.ClippingDemoController">
     <padding>
         <Insets left="20" top="20" right="20" bottom="20">
 
@@ -19,6 +19,8 @@
     </padding>
     <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" GridPane.rowSpan="1">
         <HBox fx:id="header" spacing="5" GridPane.columnIndex="0" alignment="CENTER_LEFT">
+            <Button fx:id="drawLineButton">Line</Button>
+            <Button fx:id="drawWindowButton">Window</Button>
         </HBox>
         <HBox spacing="5" GridPane.columnIndex="1" alignment="CENTER">
             <Button fx:id="zoomIn">
@@ -30,12 +32,6 @@
             <Button fx:id="clear">
                 clear
             </Button>
-            <Button fx:id="fill">
-                fill
-            </Button>
-            <ColorPicker fx:id="colorPicker">
-
-            </ColorPicker>
         </HBox>
         <HBox spacing="5" GridPane.columnIndex="2" alignment="CENTER_RIGHT">
             <Button fx:id="about">
@@ -50,16 +46,31 @@
         </columnConstraints>
     </GridPane>
 
-    <ScrollPane fx:id="myScroll" vbarPolicy="NEVER" hbarPolicy="NEVER" hvalue="0.5" vvalue="0.5"
+    <ScrollPane fx:id="inScroll" vbarPolicy="NEVER" hbarPolicy="NEVER" hvalue="0.5" vvalue="0.5"
                 style="-fx-border-color: black" GridPane.columnIndex="0"
-                GridPane.rowIndex="1" GridPane.columnSpan="2">
+                GridPane.rowIndex="1">
         <GridPane.margin>
             <Insets right="10">
 
             </Insets>
         </GridPane.margin>
         <Group>
-            <StackPane fx:id="myFrame">
+            <StackPane fx:id="inFrame">
+
+            </StackPane>
+        </Group>
+    </ScrollPane>
+
+    <ScrollPane fx:id="outScroll" vbarPolicy="NEVER" hbarPolicy="NEVER" hvalue="0.5" vvalue="0.5"
+                style="-fx-border-color: black" GridPane.columnIndex="1"
+                GridPane.rowIndex="1">
+        <GridPane.margin>
+            <Insets right="10">
+
+            </Insets>
+        </GridPane.margin>
+        <Group>
+            <StackPane fx:id="outFrame">
 
             </StackPane>
         </Group>

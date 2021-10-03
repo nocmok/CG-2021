@@ -36,7 +36,6 @@ public class CohenSutherlandClipper {
 
     public List<IntPoint[]> clip(List<IntPoint[]> lines, Rectangle w) {
         var clipped = new ArrayList<IntPoint[]>();
-        var toClip = new ArrayList<IntPoint[]>();
         for (var line : lines) {
             int p1Code = encodePoint(line[0], w);
             int p2Code = encodePoint(line[1], w);
@@ -46,27 +45,24 @@ public class CohenSutherlandClipper {
             if (p1Code == 0 && p2Code == 0) {
                 clipped.add(line);
             } else {
-                toClip.add(line);
-            }
-        }
-        for (var line : toClip) {
-            var points = new ArrayList<IntPoint>();
-            for (var p : line) {
-                int pCode = encodePoint(p, w);
-                if (pCode == 0) {
-                    points.add(p);
-                } else if ((pCode & TOP) != 0 && checkBounds(getXByY(line, w.y), w.x, w.x2())) {
-                    points.add(new IntPoint(getXByY(line, w.y), w.y));
-                } else if ((pCode & LEFT) != 0 && checkBounds(getYByX(line, w.x), w.y, w.y2())) {
-                    points.add(new IntPoint(w.x, getYByX(line, w.x)));
-                } else if ((pCode & BOTTOM) != 0 && checkBounds(getXByY(line, w.y2()), w.x, w.x2())) {
-                    points.add(new IntPoint(getXByY(line, w.y2()), w.y2()));
-                } else if ((pCode & RIGHT) != 0 && checkBounds(getYByX(line, w.x2()), w.y, w.y2())) {
-                    points.add(new IntPoint(w.x2(), getYByX(line, w.x2())));
+                var points = new ArrayList<IntPoint>();
+                for (var p : line) {
+                    int pCode = encodePoint(p, w);
+                    if (pCode == 0) {
+                        points.add(p);
+                    } else if ((pCode & TOP) != 0 && checkBounds(getXByY(line, w.y), w.x, w.x2())) {
+                        points.add(new IntPoint(getXByY(line, w.y), w.y));
+                    } else if ((pCode & LEFT) != 0 && checkBounds(getYByX(line, w.x), w.y, w.y2())) {
+                        points.add(new IntPoint(w.x, getYByX(line, w.x)));
+                    } else if ((pCode & BOTTOM) != 0 && checkBounds(getXByY(line, w.y2()), w.x, w.x2())) {
+                        points.add(new IntPoint(getXByY(line, w.y2()), w.y2()));
+                    } else if ((pCode & RIGHT) != 0 && checkBounds(getYByX(line, w.x2()), w.y, w.y2())) {
+                        points.add(new IntPoint(w.x2(), getYByX(line, w.x2())));
+                    }
                 }
-            }
-            if (!points.isEmpty()) {
-                clipped.add(new IntPoint[]{points.get(0), points.get(1)});
+                if (!points.isEmpty()) {
+                    clipped.add(new IntPoint[]{points.get(0), points.get(1)});
+                }
             }
         }
         return clipped;
