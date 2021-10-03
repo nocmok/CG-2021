@@ -1,6 +1,6 @@
 package com.nocmok.opengl.fillclip.filler;
 
-public interface Grid {
+public interface ReadableGrid {
 
     void set(int x, int y);
 

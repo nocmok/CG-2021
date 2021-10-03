@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class DfsFiller {
 
-    private Grid grid;
+    private ReadableGrid grid;
 
-    public DfsFiller(Grid grid) {
+    public DfsFiller(ReadableGrid grid) {
         this.grid = grid;
     }
 

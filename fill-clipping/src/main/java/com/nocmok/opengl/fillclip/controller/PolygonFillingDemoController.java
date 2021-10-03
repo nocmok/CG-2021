@@ -1,9 +1,10 @@
 package com.nocmok.opengl.fillclip.controller;
 
-import com.nocmok.opengl.fillclip.controller.action.PolygonFillHandler;
-import com.nocmok.opengl.fillclip.controller.action.ShapeDragHandler;
 import com.nocmok.opengl.fillclip.controller.action.Zoomer;
 import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
+import com.nocmok.opengl.fillclip.drawer.LineDrawer;
+import com.nocmok.opengl.fillclip.filler.PolygonFiller;
+import com.nocmok.opengl.fillclip.util.IntPoint;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -12,7 +13,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -20,6 +20,8 @@ import javafx.stage.Screen;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -30,8 +32,6 @@ public class PolygonFillingDemoController extends AbstractController {
     private GridPane root;
     @FXML
     private StackPane myFrame;
-    @FXML
-    private HBox header;
     @FXML
     private Button zoomIn;
     @FXML
@@ -50,22 +50,6 @@ public class PolygonFillingDemoController extends AbstractController {
         return root;
     }
 
-    private void setCurrentDragHandlers(ShapeDragHandler myHandler) {
-        myHandler.attach(myCanvas);
-
-        myCanvas.setOnMousePressed(e -> {
-            myHandler.startDrag(e.getX(), e.getY());
-        });
-
-        myCanvas.setOnMouseDragged(e -> {
-            myHandler.drag(e.getX(), e.getY());
-        });
-
-        myCanvas.setOnMouseReleased(e -> {
-            myHandler.stopDrag(e.getX(), e.getY());
-        });
-    }
-
     private String getAboutMessage() {
         try {
             var in = getClass().getClassLoader().getResourceAsStream("About.txt");
@@ -73,12 +57,6 @@ public class PolygonFillingDemoController extends AbstractController {
         } catch (IOException ignore) {
         }
         return null;
-    }
-
-    private void setCurrentPolygonFiller(PolygonFillHandler filler) {
-        myCanvas.setOnMouseClicked(e -> {
-            filler.newPoint(e.getX(), e.getY());
-        });
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -127,15 +105,24 @@ public class PolygonFillingDemoController extends AbstractController {
             myScroll.setVvalue(myVvalue);
         });
 
+        var points = new ArrayList<IntPoint>();
+
         clear.setOnMouseClicked(e -> {
             myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
-            setCurrentPolygonFiller(new PolygonFillHandler(myCanvas, Color.ROYALBLUE));
+            points.clear();
         });
 
+        colorPicker.setValue(Color.ROYALBLUE);
         colorPicker.setOnAction(ee -> {
-            // TODO
+            myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+            drawFilledPolygon(points);
         });
-        setCurrentPolygonFiller(new PolygonFillHandler(myCanvas, Color.ROYALBLUE));
+
+        myCanvas.setOnMouseClicked(e -> {
+            myCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+            points.add(new IntPoint(myCanvas.toPixelX(e.getX()), myCanvas.toPixelY(e.getY())));
+            drawFilledPolygon(points);
+        });
 
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
         about.setOnMouseClicked(e -> {
@@ -145,5 +132,30 @@ public class PolygonFillingDemoController extends AbstractController {
             alert.setContentText(aboutMessage);
             alert.showAndWait();
         });
+    }
+
+    private void drawFilledPolygon(List<IntPoint> points) {
+        var polygonFiller = new PolygonFiller((x, y) -> myCanvas.setPixel(x, y, colorPicker.getValue()));
+        var lineDrawer = new LineDrawer((x, y) -> myCanvas.setPixel(x, y, Color.BLACK));
+        if (points.size() >= 2) {
+            if (points.size() > 2) {
+                polygonFiller.fill(points);
+            }
+            // draw lines
+            var it = points.iterator();
+            var p0 = it.next();
+            while (it.hasNext()) {
+                var p1 = it.next();
+                lineDrawer.drawLine(p0.x, p0.y, p1.x, p1.y);
+                p0 = p1;
+            }
+            lineDrawer.drawLine(p0.x, p0.y, points.get(0).x, points.get(0).y);
+
+        } else {
+            // draw point
+            for (var point : points) {
+                lineDrawer.drawLine(point.x, point.y, point.x, point.y);
+            }
+        }
     }
 }

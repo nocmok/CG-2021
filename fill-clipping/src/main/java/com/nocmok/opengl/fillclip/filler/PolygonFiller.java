@@ -1,9 +1,8 @@
 package com.nocmok.opengl.fillclip.filler;
 
-import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
+import com.nocmok.opengl.fillclip.drawer.Grid;
 import com.nocmok.opengl.fillclip.drawer.LineDrawer;
 import com.nocmok.opengl.fillclip.util.IntPoint;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,8 @@ public class PolygonFiller {
 
     private LineDrawer lineDrawer;
 
-    public PolygonFiller(PixelatedCanvas canvas, Color color) {
-        this.lineDrawer = new LineDrawer((x, y) -> canvas.setPixel(x, y, color));
+    public PolygonFiller(Grid grid) {
+        this.lineDrawer = new LineDrawer(grid);
     }
 
     private int getXForY(Line line, int y) {

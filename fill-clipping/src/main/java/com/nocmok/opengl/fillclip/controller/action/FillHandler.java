@@ -1,7 +1,7 @@
 package com.nocmok.opengl.fillclip.controller.action;
 
 import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
-import com.nocmok.opengl.fillclip.filler.Grid;
+import com.nocmok.opengl.fillclip.filler.ReadableGrid;
 import com.nocmok.opengl.fillclip.filler.DfsFiller;
 import javafx.scene.paint.Color;
 
@@ -20,7 +20,7 @@ public class FillHandler {
         filler.fill(canvas.toPixelX(mouseX), canvas.toPixelY(mouseY));
     }
 
-    private static class PixelatedCanvasGrid implements Grid {
+    private static class PixelatedCanvasGrid implements ReadableGrid {
 
         private PixelatedCanvas canvas;
 
