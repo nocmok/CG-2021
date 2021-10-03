@@ -4,6 +4,7 @@ import com.nocmok.opengl.fillclip.controller.action.PixelatedCanvasDragHandler;
 import com.nocmok.opengl.fillclip.controller.action.Zoomer;
 import com.nocmok.opengl.fillclip.controller.clipper.CohenSutherlandClipper;
 import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
+import com.nocmok.opengl.fillclip.drawer.Grid;
 import com.nocmok.opengl.fillclip.drawer.LineDrawer;
 import com.nocmok.opengl.fillclip.drawer.RectangleDrawer;
 import com.nocmok.opengl.fillclip.util.IntPoint;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 public class ClippingDemoController extends AbstractController {
 
@@ -153,7 +155,8 @@ public class ClippingDemoController extends AbstractController {
 
             LineDrawer drawer = new LineDrawer((x, y) -> inCanvas.drawPixel(x, y, Color.BLACK));
             LineDrawer cleaner = new LineDrawer((x, y) -> inCanvas.drawPixel(x, y, inCanvas.getColor(x, y)));
-            LineDrawer flusher = new LineDrawer((x, y) -> inCanvas.setPixel(x, y, Color.BLACK));
+            ColorfulGrid grid = new ColorfulGrid(inCanvas);
+            LineDrawer flusher = new LineDrawer(grid);
 
             @Override public void proceedDrag(int x0, int y0, int x1, int y1, int x2, int y2) {
                 cleaner.drawLine(x0, y0, x1, y1);
@@ -161,13 +164,14 @@ public class ClippingDemoController extends AbstractController {
             }
 
             @Override public void stopDrag(int x0, int y0, int x1, int y1, int x2, int y2) {
-                flusher.drawLine(x0, y0, x1, y1);
-
                 var newLine = new IntPoint[]{new IntPoint(x0, y0), new IntPoint(x1, y1)};
                 linesToClip.add(newLine);
 
                 var areaToClip = clippingWindow.get(0);
                 var clippedLine = cliper.clip(List.<IntPoint[]>of(newLine), areaToClip);
+
+                grid.color = getLineColor(newLine, areaToClip);
+                flusher.drawLine(x0, y0, x1, y1);
 
                 drawLinesOnCanvas(clippedLine, outCanvas);
                 drawRectangleOnCanvas(areaToClip, outCanvas);
@@ -194,12 +198,15 @@ public class ClippingDemoController extends AbstractController {
 
             @Override public void stopDrag(int x0, int y0, int x1, int y1, int x2, int y2) {
                 var capture = Rectangle.ofPoints(x0, y0, x1, y1);
-                flusher.drawRectangle(capture.x, capture.y, capture.w, capture.h);
                 clippingWindow.set(0, capture);
-
                 var clippedLines = cliper.clip(linesToClip, capture);
 
-                outCanvas.fillRect(0,0,pixelW,pixelH,Color.WHITE);
+                inCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+                drawAndColorLinesOnCanvas(linesToClip, l -> getLineColor(l, capture), inCanvas);
+
+                flusher.drawRectangle(capture.x, capture.y, capture.w, capture.h);
+
+                outCanvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
                 drawLinesOnCanvas(clippedLines, outCanvas);
                 drawRectangleOnCanvas(capture, outCanvas);
             }
@@ -221,8 +228,63 @@ public class ClippingDemoController extends AbstractController {
         }
     }
 
+    private void drawAndColorLinesOnCanvas(List<IntPoint[]> linesToDraw, Function<IntPoint[], Color> linesColor,
+                                           PixelatedCanvas canvas) {
+        var grid = new ColorfulGrid(canvas);
+        var lineDrawer = new LineDrawer(grid);
+        for (var line : linesToDraw) {
+            grid.color = linesColor.apply(line);
+            lineDrawer.drawLine(line[0].x, line[0].y, line[1].x, line[1].y);
+        }
+    }
+
+    private int encodePoint(IntPoint point, Rectangle window) {
+        int LEFT = 8;
+        int RIGHT = 4;
+        int TOP = 2;
+        int BOTTOM = 1;
+
+        int code = 0;
+        if (point.x < window.x) {
+            code |= LEFT;
+        } else if (point.x > window.x2()) {
+            code |= RIGHT;
+        }
+        if (point.y < window.y) {
+            code |= TOP;
+        } else if (point.y > window.y2()) {
+            code |= BOTTOM;
+        }
+        return code;
+    }
+
+    private Color getLineColor(IntPoint[] line, Rectangle window) {
+        if (encodePoint(line[0], window) == 0 && encodePoint(line[1], window) == 0) {
+            return Color.valueOf("#00CA4E");
+        }
+        if ((encodePoint(line[0], window) & encodePoint(line[1], window)) != 0) {
+            return Color.valueOf("#FF605C");
+        }
+        return Color.valueOf("#FFBD44");
+    }
+
     private void drawRectangleOnCanvas(Rectangle rectangle, PixelatedCanvas canvas) {
         new RectangleDrawer((x, y) -> canvas.setPixel(x, y, Color.BLACK))
                 .drawRectangle(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
+    }
+
+    private static class ColorfulGrid implements Grid {
+
+        PixelatedCanvas canvas;
+
+        Color color;
+
+        ColorfulGrid(PixelatedCanvas canvas) {
+            this.canvas = canvas;
+        }
+
+        @Override public void set(int x, int y) {
+            canvas.setPixel(x, y, color);
+        }
     }
 }
