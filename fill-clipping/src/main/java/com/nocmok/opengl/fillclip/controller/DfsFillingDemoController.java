@@ -141,6 +141,7 @@ public class DfsFillingDemoController extends AbstractController {
             setCurrentFiller(new DfsFiller(new PixelatedCanvasGrid(myCanvas, colorPicker.getValue())));
         });
 
+        colorPicker.setValue(Color.ROYALBLUE);
         colorPicker.setOnAction(ee -> {
             setCurrentFiller(new DfsFiller(new PixelatedCanvasGrid(myCanvas, colorPicker.getValue())));
         });
