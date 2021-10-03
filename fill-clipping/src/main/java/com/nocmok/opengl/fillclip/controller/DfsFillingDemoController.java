@@ -1,12 +1,14 @@
 package com.nocmok.opengl.fillclip.controller;
 
+import com.nocmok.opengl.fillclip.controller.action.ActionHandler;
 import com.nocmok.opengl.fillclip.controller.action.CircleDragHandler;
 import com.nocmok.opengl.fillclip.controller.action.EllipseDragHandler;
-import com.nocmok.opengl.fillclip.controller.action.FillHandler;
 import com.nocmok.opengl.fillclip.controller.action.LineDragHandler;
-import com.nocmok.opengl.fillclip.controller.action.ShapeDragHandler;
+import com.nocmok.opengl.fillclip.controller.action.PixelatedCanvasDragHandler;
 import com.nocmok.opengl.fillclip.controller.action.Zoomer;
 import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
+import com.nocmok.opengl.fillclip.filler.DfsFiller;
+import com.nocmok.opengl.fillclip.filler.ReadableGrid;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -54,36 +56,16 @@ public class DfsFillingDemoController extends AbstractController {
         return root;
     }
 
-    private void setCurrentDragHandlers(ShapeDragHandler myHandler) {
+    private void setCurrentActionHandler(ActionHandler<PixelatedCanvas> myHandler) {
         myHandler.attach(myCanvas);
-
-        myCanvas.setOnMousePressed(e -> {
-            myHandler.startDrag(e.getX(), e.getY());
-        });
-
-        myCanvas.setOnMouseDragged(e -> {
-            myHandler.drag(e.getX(), e.getY());
-        });
-
-        myCanvas.setOnMouseReleased(e -> {
-            myHandler.stopDrag(e.getX(), e.getY());
-        });
     }
 
-    private void setCurrentFiller(FillHandler filler) {
-        myCanvas.setOnMousePressed(e -> {
-            filler.fill(e.getX(), e.getY());
-        });
-        myCanvas.setOnMouseDragged(null);
-        myCanvas.setOnMouseReleased(null);
-    }
-
-    private Button addDrawerButton(String name, ShapeDragHandler myHandler) {
+    private Button addDrawerButton(String name, PixelatedCanvasDragHandler myHandler) {
         var button = new Button();
         button.setText(name);
 
         button.setOnMouseClicked(ee -> {
-            setCurrentDragHandlers(myHandler);
+            setCurrentActionHandler(myHandler);
         });
 
         header.getChildren().add(button);
@@ -122,7 +104,7 @@ public class DfsFillingDemoController extends AbstractController {
         addDrawerButton("Circle", new CircleDragHandler());
         addDrawerButton("Ellipse", new EllipseDragHandler());
 
-        setCurrentDragHandlers(new LineDragHandler());
+        setCurrentActionHandler(new LineDragHandler());
 
         myScroll.addEventFilter(ScrollEvent.SCROLL, e -> {
             myScroll.setHvalue(myScroll.getHvalue() - e.getDeltaX() / myScroll.getWidth());
@@ -156,11 +138,11 @@ public class DfsFillingDemoController extends AbstractController {
         });
 
         fill.setOnMouseClicked(ee -> {
-            setCurrentFiller(new FillHandler(myCanvas, colorPicker.getValue()));
+            setCurrentFiller(new DfsFiller(new PixelatedCanvasGrid(myCanvas, colorPicker.getValue())));
         });
 
         colorPicker.setOnAction(ee -> {
-            setCurrentFiller(new FillHandler(myCanvas, colorPicker.getValue()));
+            setCurrentFiller(new DfsFiller(new PixelatedCanvasGrid(myCanvas, colorPicker.getValue())));
         });
 
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
@@ -171,5 +153,41 @@ public class DfsFillingDemoController extends AbstractController {
             alert.setContentText(aboutMessage);
             alert.showAndWait();
         });
+    }
+
+    private void setCurrentFiller(DfsFiller filler) {
+        myCanvas.setOnMousePressed(e -> {
+            filler.fill(myCanvas.toPixelX(e.getX()), myCanvas.toPixelY(e.getY()));
+        });
+        myCanvas.setOnMouseDragged(null);
+        myCanvas.setOnMouseReleased(null);
+    }
+
+    private static class PixelatedCanvasGrid implements ReadableGrid {
+
+        private PixelatedCanvas canvas;
+
+        private Color color;
+
+        public PixelatedCanvasGrid(PixelatedCanvas canvas, Color color) {
+            this.canvas = canvas;
+            this.color = color;
+        }
+
+        @Override public void set(int x, int y) {
+            canvas.setPixel(x, y, color);
+        }
+
+        @Override public int get(int x, int y) {
+            return canvas.getRGB(x, y);
+        }
+
+        @Override public int xSize() {
+            return canvas.getxPixels();
+        }
+
+        @Override public int ySize() {
+            return canvas.getyPixels();
+        }
     }
 }

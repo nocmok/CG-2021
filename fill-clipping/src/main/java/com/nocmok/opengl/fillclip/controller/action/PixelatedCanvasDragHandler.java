@@ -2,13 +2,13 @@ package com.nocmok.opengl.fillclip.controller.action;
 
 import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
 
-public abstract class PixelatedCanvasDragHandler {
-
+public abstract class PixelatedCanvasDragHandler implements ActionHandler<PixelatedCanvas> {
 
     public PixelatedCanvasDragHandler() {
 
     }
 
+    @Override
     public void attach(PixelatedCanvas canvas) {
         new DragHandler() {
             @Override public void startDrag(double x, double y) {

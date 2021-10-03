@@ -2,7 +2,7 @@ package com.nocmok.opengl.fillclip.controller.action;
 
 import javafx.scene.Node;
 
-public abstract class DragHandler {
+public abstract class DragHandler implements ActionHandler<Node> {
 
     private double dragX0;
 

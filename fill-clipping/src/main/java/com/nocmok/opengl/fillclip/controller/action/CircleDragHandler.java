@@ -5,9 +5,7 @@ import com.nocmok.opengl.fillclip.drawer.CircleDrawer;
 import com.nocmok.opengl.fillclip.util.Rectangle;
 import javafx.scene.paint.Color;
 
-public class CircleDragHandler extends ShapeDragHandler {
-
-    private PixelatedCanvas canvas;
+public class CircleDragHandler extends PixelatedCanvasDragHandler {
 
     private CircleDrawer drawer;
 
@@ -15,25 +13,11 @@ public class CircleDragHandler extends ShapeDragHandler {
 
     private CircleDrawer flusher;
 
-    private int dragX0;
-
-    private int dragY0;
-
-    private int dragX1;
-
-    private int dragY1;
-
     @Override public void attach(PixelatedCanvas canvas) {
         super.attach(canvas);
-        this.canvas = canvas;
         this.drawer = new CircleDrawer((x, y) -> canvas.drawPixel(x, y, Color.BLACK));
         this.cleaner = new CircleDrawer((x, y) -> canvas.drawPixel(x, y, canvas.getColor(x, y)));
         this.flusher = new CircleDrawer((x, y) -> canvas.setPixel(x, y, Color.BLACK));
-    }
-
-    @Override public void startDrag(double mouseX, double mouseY) {
-        dragX0 = dragX1 = canvas.toPixelX(mouseX);
-        dragY0 = dragY1 = canvas.toPixelY(mouseY);
     }
 
     private Rectangle getCircleAreaByCapture(int x0, int y0, int x1, int y1) {
@@ -50,21 +34,15 @@ public class CircleDragHandler extends ShapeDragHandler {
         drawer.drawCircle(area.x + r, area.y + r, r);
     }
 
-    @Override public void drag(double mouseX, double mouseY) {
-        int newDragX1 = canvas.toPixelX(mouseX);
-        int newDragY1 = canvas.toPixelY(mouseY);
+    @Override public void proceedDrag(int dragX0, int dragY0, int dragX1, int dragY1, int newDragX1, int newDragY1) {
         if (newDragX1 == dragX1 && newDragY1 == dragY1) {
             return;
         }
-
         drawCircle(cleaner, dragX0, dragY0, dragX1, dragY1);
         drawCircle(drawer, dragX0, dragY0, newDragX1, newDragY1);
-
-        dragX1 = newDragX1;
-        dragY1 = newDragY1;
     }
 
-    @Override public void stopDrag(double mouseX, double mouseY) {
+    @Override public void stopDrag(int dragX0, int dragY0, int dragX1, int dragY1, int newDragX1, int newDragY1) {
         drawCircle(flusher, dragX0, dragY0, dragX1, dragY1);
     }
 }
