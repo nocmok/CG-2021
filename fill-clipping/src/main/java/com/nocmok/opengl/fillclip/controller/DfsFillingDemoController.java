@@ -152,6 +152,8 @@ public class DfsFillingDemoController extends AbstractController {
             alert.setTitle("About this program");
             alert.setHeaderText(null);
             alert.setContentText(aboutMessage);
+            alert.setResizable(true);
+            alert.getDialogPane().setMinWidth(600);
             alert.showAndWait();
         });
     }
