@@ -49,5 +49,7 @@ public class MainSceneController extends AbstractController {
         selectDemo(addDemo("linear_interpolation_demo_layout.fxml", "Linear interpolation"));
         addDemo("casteljau_spline_demo_layout.fxml", "Casteljau spline");
         addDemo("casteljau_curve_demo_layout.fxml", "Casteljau curve");
+        addDemo("bezier_spline_demo_layout.fxml", "Bezier spline");
+        addDemo("bezier_curve_demo_layout.fxml", "Bezier curve");
     }
 }
