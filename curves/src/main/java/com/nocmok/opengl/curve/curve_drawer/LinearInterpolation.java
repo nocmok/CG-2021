@@ -1,6 +1,6 @@
 package com.nocmok.opengl.curve.curve_drawer;
 
-import com.nocmok.opengl.curve.util.IntPoint;
+import com.nocmok.opengl.curve.util.Point;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ public class LinearInterpolation implements CurveDrawer {
         this.grid = grid;
     }
 
-    @Override public void drawCurve(Collection<IntPoint> pivots) {
+    @Override public void drawCurve(Collection<Point> pivots) {
         if (pivots.isEmpty()) {
             return;
         }
@@ -20,7 +20,7 @@ public class LinearInterpolation implements CurveDrawer {
         var p0 = it.next();
         while (it.hasNext()) {
             var p1 = it.next();
-            drawLine(p0.x, p0.y, p1.x, p1.y);
+            drawLine((int)p0.x, (int)p0.y, (int)p1.x, (int)p1.y);
             p0 = p1;
         }
     }

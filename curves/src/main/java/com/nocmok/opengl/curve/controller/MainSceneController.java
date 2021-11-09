@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,7 +17,7 @@ public class MainSceneController extends AbstractController {
     @FXML
     private AnchorPane demoContainer;
     @FXML
-    private Button linearInterpolationDemo;
+    private HBox demos;
 
     @Override public Parent getRoot() {
         return root;
@@ -31,16 +32,21 @@ public class MainSceneController extends AbstractController {
         demoContainer.getChildren().add(controller.getRoot());
     }
 
+    private AbstractController addDemo(String layoutName, String title) {
+        var controller = AbstractController.getNewController(
+                getLayoutUri(layoutName));
+        var button = new Button(title);
+        button.setOnMouseClicked(e -> selectDemo(controller));
+        demos.getChildren().add(button);
+        return controller;
+    }
+
     private URL getLayoutUri(String layoutName) {
         return getClass().getClassLoader().getResource("layout/" + layoutName);
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
-        var linearInterpolationDemoController = AbstractController.<LinearInterpolationController>getNewController(
-                getLayoutUri("linear_interpolation_demo_layout.fxml"));
-
-        linearInterpolationDemo.setOnMouseClicked(e -> selectDemo(linearInterpolationDemoController));
-
-        selectDemo(linearInterpolationDemoController);
+        selectDemo(addDemo("linear_interpolation_demo_layout.fxml", "Linear Interpolation"));
+        addDemo("casteljau_spline_demo_layout.fxml", "Casteljau spline");
     }
 }
