@@ -46,7 +46,8 @@ public class MainSceneController extends AbstractController {
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
-        selectDemo(addDemo("linear_interpolation_demo_layout.fxml", "Linear Interpolation"));
+        selectDemo(addDemo("linear_interpolation_demo_layout.fxml", "Linear interpolation"));
         addDemo("casteljau_spline_demo_layout.fxml", "Casteljau spline");
+        addDemo("casteljau_curve_demo_layout.fxml", "Casteljau curve");
     }
 }

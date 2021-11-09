@@ -3,6 +3,7 @@ package com.nocmok.opengl.curve.controller;
 import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
+import com.nocmok.opengl.curve.curve_drawer.CasteljauCurve;
 import com.nocmok.opengl.curve.curve_drawer.CasteljauSpline;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class CasteljauSplineController extends AbstractController {
+public class CasteljauCurveController extends AbstractController {
 
     @FXML
     private GridPane root;
@@ -95,12 +96,12 @@ public class CasteljauSplineController extends AbstractController {
         });
 
         double step = 1e-4;
-        var casteljauSpline = new CasteljauSpline((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
+        var casteljauCurve = new CasteljauCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
 
         new AddPivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
-                casteljauSpline.drawCurve(
+                casteljauCurve.drawCurve(
                         pivots.stream()
                                 .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
                                 .collect(Collectors.toList()));
