@@ -4,7 +4,6 @@ import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.BSpline3;
-import com.nocmok.opengl.curve.curve_drawer.BezierSpline;
 import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
@@ -103,7 +102,9 @@ public class BSplineController extends AbstractController {
                         .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
                         .collect(Collectors.toList());
                 linearInterpolation.drawCurve(points);
-                bSpline.drawCurve(points);
+                if (points.size() >= 4) {
+                    bSpline.drawCurve(points);
+                }
             }
         };
         pivotsHandler.attach(frame);
