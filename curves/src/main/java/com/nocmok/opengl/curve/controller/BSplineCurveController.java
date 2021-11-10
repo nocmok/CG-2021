@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -94,6 +95,7 @@ public class BSplineCurveController extends AbstractController {
 
         double step = 1e-2;
         var bSpline = new BSplineCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
+        var bSpline3 = new BSpline3((x, y) -> canvas.setPixel((int) x, (int) y, Color.GREEN), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
         var pivotsHandler = new AddPivotHandler() {
@@ -104,6 +106,13 @@ public class BSplineCurveController extends AbstractController {
                         .collect(Collectors.toList());
                 linearInterpolation.drawCurve(points);
                 bSpline.drawCurve(points);
+
+                if(points.size() >= 4) {
+                    int n = points.size() - 1;
+                    bSpline3.drawCurve(List.of(points.get(n-2),points.get(n-1),points.get(n), points.get(0)));
+                    bSpline3.drawCurve(List.of(points.get(n-1),points.get(n),points.get(0), points.get(1)));
+                    bSpline3.drawCurve(List.of(points.get(n),points.get(0),points.get(1), points.get(2)));
+                }
             }
         };
         pivotsHandler.attach(frame);
