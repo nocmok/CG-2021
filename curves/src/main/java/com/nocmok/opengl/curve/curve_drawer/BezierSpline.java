@@ -11,24 +11,25 @@ public class BezierSpline implements CurveDrawer {
 
     static {
         fact[0] = 1;
-        for(int i = 1; i <= MAX_PIVOTS; ++i) {
+        for (int i = 1; i <= MAX_PIVOTS; ++i) {
             fact[i] = fact[i - 1] * i;
         }
     }
 
-    private final Grid grid;
     private final double step;
 
+    private final LinearCurve lineDrawer;
+
     public BezierSpline(Grid grid, double step) {
-        this.grid = grid;
         this.step = step;
+        this.lineDrawer = new LinearCurve(grid);
     }
 
     private static double fact(int n) {
         return fact[n];
     }
 
-    private void drawPoint(List<Point> pivots, double t) {
+    private Point getPoint(List<Point> pivots, double t) {
         var point = new Point(0d, 0d);
         int n = pivots.size() - 1;
         for (int i = 0; i < pivots.size(); ++i) {
@@ -36,7 +37,7 @@ public class BezierSpline implements CurveDrawer {
             point.x += pivots.get(i).x * factor;
             point.y += pivots.get(i).y * factor;
         }
-        grid.setPixel(point.x, point.y);
+        return point;
     }
 
     @Override public void drawCurve(List<Point> pivots) {
@@ -44,8 +45,13 @@ public class BezierSpline implements CurveDrawer {
             return;
         }
         int nPivots = Integer.min(MAX_PIVOTS, pivots.size());
+        Point p0 = null;
         for (double t = 0d; t <= 1d; t += step) {
-            drawPoint(pivots.subList(0, nPivots), t);
+            var p1 = getPoint(pivots.subList(0, nPivots), t);
+            if (p0 != null) {
+                lineDrawer.drawLine(p0.x, p0.y, p1.x, p1.y);
+            }
+            p0 = p1;
         }
     }
 }

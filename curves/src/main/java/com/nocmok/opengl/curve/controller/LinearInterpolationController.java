@@ -3,8 +3,7 @@ package com.nocmok.opengl.curve.controller;
 import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
-import com.nocmok.opengl.curve.curve_drawer.LinearInterpolation;
-import com.nocmok.opengl.curve.util.IntPoint;
+import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -95,7 +94,7 @@ public class LinearInterpolationController extends AbstractController {
             alert.showAndWait();
         });
 
-        var linearInterpolation = new LinearInterpolation((x, y) -> canvas.setPixel((int)x, (int)y, Color.ROYALBLUE));
+        var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int)x, (int)y, Color.ROYALBLUE));
         new AddPivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);

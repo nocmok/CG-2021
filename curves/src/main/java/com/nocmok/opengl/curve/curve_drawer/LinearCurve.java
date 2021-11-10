@@ -2,14 +2,13 @@ package com.nocmok.opengl.curve.curve_drawer;
 
 import com.nocmok.opengl.curve.util.Point;
 
-import java.util.Collection;
 import java.util.List;
 
-public class LinearInterpolation implements CurveDrawer {
+public class LinearCurve implements CurveDrawer {
 
     private Grid grid;
 
-    public LinearInterpolation(Grid grid) {
+    public LinearCurve(Grid grid) {
         this.grid = grid;
     }
 
@@ -21,9 +20,13 @@ public class LinearInterpolation implements CurveDrawer {
         var p0 = it.next();
         while (it.hasNext()) {
             var p1 = it.next();
-            drawLine((int)p0.x, (int)p0.y, (int)p1.x, (int)p1.y);
+            drawLine(p0.x, p0.y, p1.x, p1.y);
             p0 = p1;
         }
+    }
+
+    public void drawLine(double x0, double y0, double x1, double y1) {
+        drawLine((int) x0, (int) y0, (int) x1, (int) y1);
     }
 
     private void drawLine(int x0, int y0, int x1, int y1) {

@@ -4,8 +4,7 @@ import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.BezierSpline;
-import com.nocmok.opengl.curve.curve_drawer.CasteljauSpline;
-import com.nocmok.opengl.curve.curve_drawer.LinearInterpolation;
+import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -96,9 +95,9 @@ public class BezierSplineController extends AbstractController {
             alert.showAndWait();
         });
 
-        double step = 1e-4;
+        double step = 1e-2;
         var bezierSpline = new BezierSpline((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
-        var linearInterpolation = new LinearInterpolation((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
+        var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
         new AddPivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
