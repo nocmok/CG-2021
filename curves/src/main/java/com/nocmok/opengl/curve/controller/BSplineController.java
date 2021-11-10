@@ -3,7 +3,8 @@ package com.nocmok.opengl.curve.controller;
 import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
-import com.nocmok.opengl.curve.curve_drawer.CasteljauSpline;
+import com.nocmok.opengl.curve.curve_drawer.BSpline3;
+import com.nocmok.opengl.curve.curve_drawer.BezierSpline;
 import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
@@ -26,7 +27,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class CasteljauSplineController extends AbstractController {
+public class BSplineController extends AbstractController {
 
     @FXML
     private GridPane root;
@@ -92,7 +93,7 @@ public class CasteljauSplineController extends AbstractController {
         });
 
         double step = 1e-2;
-        var casteljauSpline = new CasteljauSpline((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
+        var bSpline = new BSpline3((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
         var pivotsHandler = new AddPivotHandler() {
@@ -102,7 +103,7 @@ public class CasteljauSplineController extends AbstractController {
                         .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
                         .collect(Collectors.toList());
                 linearInterpolation.drawCurve(points);
-                casteljauSpline.drawCurve(points);
+                bSpline.drawCurve(points);
             }
         };
         pivotsHandler.attach(frame);
@@ -115,3 +116,4 @@ public class CasteljauSplineController extends AbstractController {
         });
     }
 }
+

@@ -29,7 +29,7 @@ public class BezierSpline implements CurveDrawer {
         return fact[n];
     }
 
-    private Point getPoint(List<Point> pivots, double t) {
+    private Point getPointByT(List<Point> pivots, double t) {
         var point = new Point(0d, 0d);
         int n = pivots.size() - 1;
         for (int i = 0; i < pivots.size(); ++i) {
@@ -44,13 +44,11 @@ public class BezierSpline implements CurveDrawer {
         if (pivots.size() < 2) {
             return;
         }
-        int nPivots = Integer.min(MAX_PIVOTS, pivots.size());
-        Point p0 = null;
-        for (double t = 0d; t <= 1d; t += step) {
-            var p1 = getPoint(pivots.subList(0, nPivots), t);
-            if (p0 != null) {
-                lineDrawer.drawLine(p0.x, p0.y, p1.x, p1.y);
-            }
+        pivots = pivots.subList(0, Integer.min(MAX_PIVOTS, pivots.size()));
+        Point p0 = getPointByT(pivots, 0d);
+        for (double t = step; t <= 1d; t += step) {
+            var p1 = getPointByT(pivots, t);
+            lineDrawer.drawLine(p0.x, p0.y, p1.x, p1.y);
             p0 = p1;
         }
     }

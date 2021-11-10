@@ -71,7 +71,7 @@ public class CasteljauCurveController extends AbstractController {
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        int pixelSize = 1;
+        int pixelSize = 2;
         var screen = Screen.getPrimary().getBounds();
 
         double h = ((int) screen.getHeight()) - ((int) screen.getHeight()) % pixelSize;

@@ -24,7 +24,7 @@ public class CasteljauSpline implements CurveDrawer {
     }
 
     private Point getPointByT(Collection<Point> pivots, double t) {
-        while(pivots.size() > 2) {
+        while (pivots.size() > 2) {
             var newPivots = new ArrayList<Point>(pivots.size() - 1);
             var it = pivots.iterator();
             var p0 = it.next();
@@ -40,15 +40,13 @@ public class CasteljauSpline implements CurveDrawer {
     }
 
     @Override public void drawCurve(List<Point> pivots) {
-        if(pivots.size() < 2) {
+        if (pivots.size() < 2) {
             return;
         }
-        Point p0 = null;
-        for (double t = 0d; t <= 1d; t += step) {
+        Point p0 = getPointByT(pivots, 0d);
+        for (double t = step; t <= 1d; t += step) {
             var p1 = getPointByT(pivots, t);
-            if(p0 != null) {
-                lineDrawer.drawLine(p0.x, p0.y, p1.x, p1.y);
-            }
+            lineDrawer.drawLine(p0.x, p0.y, p1.x, p1.y);
             p0 = p1;
         }
     }

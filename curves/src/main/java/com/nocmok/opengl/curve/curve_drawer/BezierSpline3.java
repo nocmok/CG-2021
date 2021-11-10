@@ -16,17 +16,13 @@ public class BezierSpline3 implements CurveDrawer {
     }
 
     private Point getPointByT(List<Point> pivots, double t) {
-        var p0 = pivots.get(0);
-        var p1 = pivots.get(1);
-        var p2 = pivots.get(2);
-        var p3 = pivots.get(3);
+        double k0 = (1 - t) * (1 - t) * (1 - t);
+        double k1 = 3 * t * (1 - t) * (1 - t);
+        double k2 = 3 * t * t * (1 - t);
+        double k3 = t * t * t;
 
-        double x =
-                (1d - t) * (1d - t) * (1d - t) * p0.x + 3 * t * (1 - t) * (1 - t) * p1.x + 3 * t * t * (1 - t) * p2.x +
-                        t * t * t * p3.x;
-        double y =
-                (1d - t) * (1d - t) * (1d - t) * p0.y + 3 * t * (1 - t) * (1 - t) * p1.y + 3 * t * t * (1 - t) * p2.y +
-                        t * t * t * p3.y;
+        double x = k0 * pivots.get(0).x + k1 * pivots.get(1).x + k2 * pivots.get(2).x + k3 * pivots.get(3).x;
+        double y = k0 * pivots.get(0).y + k1 * pivots.get(1).y + k2 * pivots.get(2).y + k3 * pivots.get(3).y;
 
         return new Point(x, y);
     }
