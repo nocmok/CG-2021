@@ -80,10 +80,6 @@ public class CasteljauSplineController extends AbstractController {
             e.consume();
         });
 
-        clear.setOnMouseClicked(e -> {
-            canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
-        });
-
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
         about.setOnMouseClicked(e -> {
             var alert = new Alert(Alert.AlertType.INFORMATION);
@@ -99,7 +95,7 @@ public class CasteljauSplineController extends AbstractController {
         var casteljauSpline = new CasteljauSpline((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
-        new AddPivotHandler() {
+        var pivotsHandler = new AddPivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
                 var points = pivots.stream()
@@ -108,6 +104,14 @@ public class CasteljauSplineController extends AbstractController {
                 linearInterpolation.drawCurve(points);
                 casteljauSpline.drawCurve(points);
             }
-        }.attach(frame);
+        };
+        pivotsHandler.attach(frame);
+
+        clear.setOnMouseClicked(e -> {
+            canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+            pivotsHandler.getPivots().clear();
+            frame.getChildren().clear();
+            frame.getChildren().add(canvas);
+        });
     }
 }

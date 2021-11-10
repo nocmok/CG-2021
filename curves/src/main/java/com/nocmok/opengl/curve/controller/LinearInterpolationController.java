@@ -79,10 +79,6 @@ public class LinearInterpolationController extends AbstractController {
             e.consume();
         });
 
-        clear.setOnMouseClicked(e -> {
-            canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
-        });
-
         String aboutMessage = Objects.requireNonNullElse(getAboutMessage(), "Cannot load about message");
         about.setOnMouseClicked(e -> {
             var alert = new Alert(Alert.AlertType.INFORMATION);
@@ -94,8 +90,8 @@ public class LinearInterpolationController extends AbstractController {
             alert.showAndWait();
         });
 
-        var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int)x, (int)y, Color.ROYALBLUE));
-        new AddPivotHandler() {
+        var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE));
+        var pivotsHandler = new AddPivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
                 linearInterpolation.drawCurve(
@@ -103,6 +99,14 @@ public class LinearInterpolationController extends AbstractController {
                                 .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
                                 .collect(Collectors.toList()));
             }
-        }.attach(frame);
+        };
+        pivotsHandler.attach(frame);
+
+        clear.setOnMouseClicked(e -> {
+            canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+            pivotsHandler.getPivots().clear();
+            frame.getChildren().clear();
+            frame.getChildren().add(canvas);
+        });
     }
 }
