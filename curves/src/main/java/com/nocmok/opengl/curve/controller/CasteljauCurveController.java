@@ -4,6 +4,7 @@ import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.CasteljauCurve;
+import com.nocmok.opengl.curve.curve_drawer.CasteljauSpline;
 import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -53,6 +55,18 @@ public class CasteljauCurveController extends AbstractController {
         } catch (IOException ignore) {
         }
         return null;
+    }
+
+    /**
+     * Откладывает точку p2 на продолжении прямой (p0, p1)
+     * таким образом, что p0 - начальная точка p2 - конечная, а p1 - находится в центре прямой
+     */
+    private Point computeClosure(Point p0, Point p1) {
+        // точка p1 - посередине
+        // точка p0 - начальная
+        double x = p1.x + (p1.x - p0.x);
+        double y = p1.y + (p1.y - p0.y);
+        return new Point(x, y);
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,6 +107,7 @@ public class CasteljauCurveController extends AbstractController {
 
         double step = 1e-2;
         var casteljauCurve = new CasteljauCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
+        var closureDrawer = new CasteljauSpline((x, y) -> canvas.setPixel((int)x, (int)y, Color.GREEN), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
         var pivotsHandler = new AddPivotHandler() {
@@ -103,6 +118,23 @@ public class CasteljauCurveController extends AbstractController {
                         .collect(Collectors.toList());
                 linearInterpolation.drawCurve(points);
                 casteljauCurve.drawCurve(points);
+
+                // добавляем замыкание
+                if(points.size() > 2) {
+                    // взять первые две и последние две точки
+
+                    // вычислить еще две опорные точки
+                    // взять вычисленные две, первую и последнюю точку
+
+                    // построить сплайн на полученных 4 точках
+
+                    var closurePivots = List.of(points.get(0),
+                            computeClosure(points.get(1), points.get(0)),
+                            computeClosure(points.get(points.size() - 2), points.get(points.size() - 1)),
+                            points.get(points.size() - 1));
+
+                    closureDrawer.drawCurve(closurePivots);
+                }
             }
         };
         pivotsHandler.attach(frame);
