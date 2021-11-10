@@ -5,6 +5,7 @@ import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.BezierCurve;
 import com.nocmok.opengl.curve.curve_drawer.BezierSpline;
+import com.nocmok.opengl.curve.curve_drawer.BezierSpline3;
 import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
@@ -71,7 +72,7 @@ public class BezierCurveController extends AbstractController {
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        int pixelSize = 1;
+        int pixelSize = 2;
         var screen = Screen.getPrimary().getBounds();
 
         double h = ((int) screen.getHeight()) - ((int) screen.getHeight()) % pixelSize;
@@ -107,7 +108,7 @@ public class BezierCurveController extends AbstractController {
 
         double step = 1e-2;
         var bezierCurve = new BezierCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
-        var closureDrawer = new BezierSpline((x, y) -> canvas.setPixel((int) x, (int) y, Color.GREEN), step);
+        var closureDrawer = new BezierSpline3((x, y) -> canvas.setPixel((int) x, (int) y, Color.GREEN), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
         var pivotsHandler = new AddPivotHandler() {
