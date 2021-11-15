@@ -1,0 +1,57 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'org.beryx.jlink' version '2.24.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+}
+
+javafx {
+    if (System.properties.get('os.arch') == 'aarch64') {
+        println "probably running on a sillicon m1, using local jfx sdk: ${System.getenv('JAVAFX_HOME')}"
+        sdk System.getenv('JAVAFX_HOME')
+    } else {
+        version = "17"
+    }
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+        resources {
+            srcDirs 'src/main/resources'
+        }
+    }
+}
+
+processResources.duplicatesStrategy(DuplicatesStrategy.WARN)
+
+application {
+    mainModule = 'com.nocmok.opengl._3d'
+    mainClass = 'com.nocmok.opengl._3d.Launcher'
+}
+
+run {
+    standardInput = System.in
+    standardOutput = System.out
+}
+
+jlink {
+    launcher{
+        name = 'run-application'
+    }
+}

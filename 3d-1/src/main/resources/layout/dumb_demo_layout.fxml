@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
+          fx:controller="com.nocmok.opengl._3d.controller.DumbDemoController">
+    <padding>
+        <Insets left="20" top="20" right="20" bottom="20">
+
+        </Insets>
+    </padding>
+
+    <ScrollPane style="-fx-border-color: black" GridPane.columnIndex="0"
+                GridPane.rowIndex="1" GridPane.columnSpan="2" hvalue="0.5" vvalue="0.5" hbarPolicy="NEVER"
+                vbarPolicy="NEVER" pannable="false">
+        <Pane fx:id="frame">
+
+        </Pane>
+    </ScrollPane>
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" valignment="CENTER"/>
+    </rowConstraints>
+</GridPane>

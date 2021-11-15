@@ -1,0 +1,1 @@
+![Graphics primitives demo](https://github.com/nocmok/OpenGL-2021/blob/master/primitives/demo.png?raw=true)
