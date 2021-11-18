@@ -2,7 +2,7 @@ package com.nocmok.opengl.fillclip.controller;
 
 import com.nocmok.opengl.fillclip.controller.action.PixelatedCanvasDragHandler;
 import com.nocmok.opengl.fillclip.controller.action.Zoomer;
-import com.nocmok.opengl.fillclip.controller.clipper.CohenSutherlandClipper;
+import com.nocmok.opengl.fillclip.clipper.CohenSutherlandClipper;
 import com.nocmok.opengl.fillclip.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.fillclip.drawer.Grid;
 import com.nocmok.opengl.fillclip.drawer.LineDrawer;
