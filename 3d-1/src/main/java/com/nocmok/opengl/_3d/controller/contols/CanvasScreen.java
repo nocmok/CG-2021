@@ -23,7 +23,7 @@ public class CanvasScreen implements Screen {
         return Integer.max(min, Integer.min(n, max));
     }
 
-    @Override public int[] transform(float[] point, int[] screenPoint) {
+    @Override public int[] transform(double[] point, int[] screenPoint) {
         screenPoint[0] = clip((int) (point[0] * getXSize()), 0, getXSize());
         screenPoint[1] = clip((int) (point[1] * getYSize()), 0, getYSize());
         return screenPoint;

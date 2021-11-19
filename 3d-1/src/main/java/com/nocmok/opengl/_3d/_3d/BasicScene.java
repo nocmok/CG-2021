@@ -1,5 +1,9 @@
 package com.nocmok.opengl._3d._3d;
 
+import com.nocmok.opengl._3d._3d.camera.Camera;
+import com.nocmok.opengl._3d._3d.model.PolygonModel;
+import com.nocmok.opengl._3d._3d.transformation.Transformation;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,19 +20,19 @@ public class BasicScene implements Scene {
     public BasicScene() {
     }
 
-    private void transformToScreenCoordinates(Screen screen, float[][] points, int[][] screenPoints) {
+    private void transformToScreenCoordinates(Screen screen, double[][] points, int[][] screenPoints) {
         for (int i = 0; i < points.length; ++i) {
             screen.transform(points[i], screenPoints[i]);
         }
     }
 
-    private void shiftPoints(float[][] points, float[] shift) {
+    private void shiftPoints(double[][] points, double[] shift) {
         for (var p : points) {
             math3d.sum3(p, shift, p);
         }
     }
 
-    @Override public void addObject(PolygonModel model, float[] position) {
+    @Override public void addObject(PolygonModel model, double[] position) {
         objects.add(new Object3D(model, position));
     }
 
@@ -40,20 +44,20 @@ public class BasicScene implements Scene {
         return true;
     }
 
-    private void applyTransformation(float[][] points, Transformation transformation) {
+    private void applyTransformation(double[][] points, Transformation transformation) {
         for (int i = 0; i < points.length; ++i) {
             transformation.apply(points[i]);
         }
     }
 
-    private void applyTransformations(float[][] points, List<Transformation> transformations) {
+    private void applyTransformations(double[][] points, List<Transformation> transformations) {
         for (var t : transformations) {
             applyTransformation(points, t);
         }
     }
 
-    private float[][] deepCopy(float[][] array) {
-        float[][] copy = new float[array.length][];
+    private double[][] deepCopy(double[][] array) {
+        double[][] copy = new double[array.length][];
         for (int i = 0; i < array.length; ++i) {
             copy[i] = Arrays.copyOf(array[i], array[i].length);
         }
@@ -66,13 +70,13 @@ public class BasicScene implements Scene {
 
     // Метод предполагает, что объект валиден и виден на камере
     private void drawObject(Screen screen, Camera camera, Object3D obj) {
-        float[][] objPoints = deepCopy(obj.model.getPoints());
+        double[][] objPoints = deepCopy(obj.model.getPoints());
 
         shiftPoints(objPoints, obj.position);
 
         applyTransformations(objPoints, transformations);
 
-        float[][] viewPoints = new float[objPoints.length][2];
+        double[][] viewPoints = new double[objPoints.length][2];
         camera.project(objPoints, viewPoints);
 
         int[][] screenPoints = new int[objPoints.length][2];
@@ -101,11 +105,15 @@ public class BasicScene implements Scene {
 
     private static class Object3D {
         PolygonModel model;
-        float[] position;
+        double[] position;
 
-        Object3D(PolygonModel model, float[] position) {
+        Object3D(PolygonModel model, double[] position) {
             this.model = model;
             this.position = position;
         }
+    }
+
+    @Override public void clear() {
+        objects.clear();
     }
 }

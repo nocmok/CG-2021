@@ -1,13 +1,15 @@
 package com.nocmok.opengl._3d._3d;
 
 public interface Math3D {
-    float[] mul(float[] vec, float[][] matrix, float[] mul);
+    double[] mul(double[] vec, double s, double[] mul);
 
-    float[][] mul(float[][] a, float[][] b, float[][] mul);
+    double[] mul(double[] vec, double[][] matrix, double[] mul);
 
-    float[] sub3(float[] a, float[] b);
+    double[][] mul(double[][] a, double[][] b, double[][] mul);
 
-    float[] sum3(float[] a, float[] b, float[] sum);
+    double[] sub3(double[] a, double[] b);
 
-    float[] neg(float[] a);
+    double[] sum3(double[] a, double[] b, double[] sum);
+
+    double[] neg(double[] a);
 }

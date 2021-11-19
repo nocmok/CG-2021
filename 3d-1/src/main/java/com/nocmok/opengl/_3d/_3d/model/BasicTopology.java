@@ -1,4 +1,6 @@
-package com.nocmok.opengl._3d._3d;
+package com.nocmok.opengl._3d._3d.model;
+
+import com.nocmok.opengl._3d._3d.model.ModelTopology;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
