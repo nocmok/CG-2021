@@ -45,10 +45,10 @@ public class DumbDemoController extends AbstractController {
 
     private PolygonModel sampleModel() {
         float[][] points = new float[][]{
-                {100f, 0f, 0f, 1f},
+                {0f, 100f, 0f, 1f},
                 {0f, 0f, 100f, 1f},
-                {0f, -100f, -100f, 1f},
-                {0f, 100f, -100f, 1f}
+                {(float)(-100 * Math.cos(Math.PI / 6)), 0f, (float)(-100 * Math.sin(Math.PI / 6)), 1f},
+                {(float)(100 * Math.cos(Math.PI / 6)), 0f, (float)(-100 * Math.sin(Math.PI / 6)), 1f}
         };
         int[][] topology = new int[][]{
                 {0, 1, 2},

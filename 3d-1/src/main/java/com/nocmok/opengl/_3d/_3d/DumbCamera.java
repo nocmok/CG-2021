@@ -31,7 +31,7 @@ public class DumbCamera implements Camera {
 
     @Override public float[] project(float[] point, float[] projection) {
         projection[0] = point[0];
-        projection[1] = point[1];
+        projection[1] = -point[1];
         return normalize(projection);
     }
 
