@@ -45,8 +45,10 @@ public class BasicScene implements Scene {
     }
 
     private void applyTransformation(double[][] points, Transformation transformation) {
-        for (int i = 0; i < points.length; ++i) {
-            transformation.apply(points[i]);
+        double[] buf = new double[4];
+        for (double[] point : points) {
+            transformation.apply(point, buf);
+            System.arraycopy(buf, 0, point, 0, 4);
         }
     }
 

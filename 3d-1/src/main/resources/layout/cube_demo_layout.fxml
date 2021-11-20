@@ -12,7 +12,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.RadioButton?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
-          fx:controller="com.nocmok.opengl._3d.controller.DumbDemoController">
+          fx:controller="com.nocmok.opengl._3d.controller.CubeDemoController">
     <padding>
         <Insets left="20" top="20" right="20" bottom="20">
 
@@ -149,10 +149,10 @@
                 <Label>
                     Projection
                 </Label>
-                <RadioButton toggleGroup="${projectionGroup}">
+                <RadioButton fx:id="parallelProjection" toggleGroup="${projectionGroup}">
                     Parallel
                 </RadioButton>
-                <RadioButton toggleGroup="${projectionGroup}">
+                <RadioButton fx:id="singlePointProjection" toggleGroup="${projectionGroup}">
                     Single point
                 </RadioButton>
             </VBox>
@@ -170,11 +170,11 @@
 
                     </ToggleGroup>
                 </fx:define>
-                <RadioButton toggleGroup="${projectionGroup}">
-                    Rotation -> Shift
-                </RadioButton>
-                <RadioButton toggleGroup="${projectionGroup}">
+                <RadioButton fx:id="shiftThenRotation" toggleGroup="${orderGroup}">
                     Shift -> rotation
+                </RadioButton>
+                <RadioButton fx:id="rotationThenShift" toggleGroup="${orderGroup}">
+                    Rotation -> Shift
                 </RadioButton>
             </VBox>
         </VBox>

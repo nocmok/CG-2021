@@ -14,16 +14,43 @@ public class CentralProjectionCamera implements Camera {
     private final double minY;
 
     public CentralProjectionCamera(double pov, double xSize, double ySize) {
-        this.operator = new double[][]{
-                {1, 0, 0, 0},
-                {0, 1, 0, 0},
-                {0, 0, 0, -1 / pov},
-                {0, 0, 0, 1},
-        };
+        this.operator = getMatrix(pov);
         this.xSize = xSize;
         this.ySize = ySize;
         this.minX = -xSize;
         this.minY = -ySize;
+    }
+
+    public static void getMatrix(double pov, double[][] matrix) {
+        matrix[0][0] = 1;
+        matrix[0][1] = 0;
+        matrix[0][2] = 0;
+        matrix[0][3] = 0;
+
+        matrix[1][0] = 0;
+        matrix[1][1] = 1;
+        matrix[1][2] = 0;
+        matrix[1][3] = 0;
+
+        matrix[2][0] = 0;
+        matrix[2][1] = 0;
+        matrix[2][2] = 0;
+        matrix[2][3] = -1 / pov;
+
+        matrix[3][0] = 0;
+        matrix[3][1] = 0;
+        matrix[3][2] = 0;
+        matrix[3][3] = 1;
+    }
+
+    public static double[][] getMatrix(double pov) {
+        double[][] matrix = new double[4][4];
+        getMatrix(pov, matrix);
+        return matrix;
+    }
+
+    public void setPov(double pov) {
+        getMatrix(pov, operator);
     }
 
     private double clip(double n, double min, double max) {
