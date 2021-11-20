@@ -6,12 +6,12 @@ import com.nocmok.opengl._3d._3d.model.TriangleModel;
 
 public class SampleModels {
 
-    public static PolygonModel tetrahedronModel() {
+    public static PolygonModel tetrahedronModel(double side) {
         double[][] points = new double[][]{
-                {0f, 100f, 0f, 1f},
-                {0f, 0f, 100f, 1f},
-                {(-100 * Math.cos(Math.PI / 6)), 0f, (-100 * Math.sin(Math.PI / 6)), 1f},
-                {(100 * Math.cos(Math.PI / 6)), 0f, (-100 * Math.sin(Math.PI / 6)), 1f}
+                {0, side, 0, 1},
+                {0, 0, side, 1},
+                {(-side * Math.cos(Math.PI / 6)), 0, (-100 * Math.sin(Math.PI / 6)), 1},
+                {(side * Math.cos(Math.PI / 6)), 0, (-100 * Math.sin(Math.PI / 6)), 1}
         };
         int[][] topology = new int[][]{
                 {0, 1, 2},
