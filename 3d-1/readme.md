@@ -1,1 +1,1 @@
-![Graphics primitives demo](https://github.com/nocmok/OpenGL-2021/blob/master/primitives/demo.png?raw=true)
+![Graphics primitives demo](https://github.com/nocmok/CG-2021/blob/master/3d-1/demo.gif?raw=true)
