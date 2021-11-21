@@ -11,12 +11,12 @@ public class CanvasScreen implements Screen {
         this.canvas = canvas;
     }
 
-    @Override public void drawPolygon(int[][] polygon) {
+    @Override public void drawPolygon(int[][] polygon, int n) {
         var g2 = canvas.getGraphicsContext2D();
-        for (int i = 1; i < polygon.length; ++i) {
+        for (int i = 1; i < n; ++i) {
             g2.strokeLine(polygon[i][0], polygon[i][1], polygon[i - 1][0], polygon[i - 1][1]);
         }
-        g2.strokeLine(polygon[polygon.length - 1][0], polygon[polygon.length - 1][1], polygon[0][0], polygon[0][1]);
+        g2.strokeLine(polygon[n - 1][0], polygon[n - 1][1], polygon[0][0], polygon[0][1]);
     }
 
     private int clip(int n, int min, int max) {

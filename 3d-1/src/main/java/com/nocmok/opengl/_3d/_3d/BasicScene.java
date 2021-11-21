@@ -89,11 +89,11 @@ public class BasicScene implements Scene {
         var it = obj.model.getTopology().getPolygons();
         while (it.hasNext()) {
             int[] indexes = it.next();
-            for (int i = 0; i < obj.model.getPolygonDegree(); ++i) {
+            for (int i = 0; i < indexes.length; ++i) {
                 polygon[i][0] = screenPoints[indexes[i]][0];
                 polygon[i][1] = screenPoints[indexes[i]][1];
             }
-            screen.drawPolygon(polygon);
+            screen.drawPolygon(polygon, indexes.length);
         }
     }
 

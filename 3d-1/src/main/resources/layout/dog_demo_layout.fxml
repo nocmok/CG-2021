@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.RadioButton?>
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
+          fx:controller="com.nocmok.opengl._3d.controller.DogDemoController">
+    <padding>
+        <Insets left="20" top="20" right="20" bottom="20">
+
+        </Insets>
+    </padding>
+
+    <ScrollPane GridPane.columnIndex="0"
+                hvalue="0.5" vvalue="0.5" hbarPolicy="NEVER"
+                vbarPolicy="NEVER" pannable="false">
+        <Pane fx:id="frame">
+
+        </Pane>
+    </ScrollPane>
+
+    <GridPane GridPane.columnIndex="1">
+        <GridPane.margin>
+            <Insets left="20">
+
+            </Insets>
+        </GridPane.margin>
+        <VBox GridPane.columnIndex="0" alignment="CENTER" spacing="10">
+            <VBox style="-fx-background-color: #F4F4F4; -fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;">
+                <padding>
+                    <Insets left="10" right="10" top="10" bottom="10">
+                    </Insets>
+                </padding>
+                <Label>Shift</Label>
+                <GridPane hgap="10">
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="0">x</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="xShift"
+                            showTickLabels="true"></Slider>
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">y</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="yShift"
+                            showTickLabels="true"></Slider>
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">z</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="zShift"
+                            showTickLabels="true"></Slider>
+
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" halignment="CENTER" minWidth="20"/>
+                        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                    </rowConstraints>
+                </GridPane>
+
+            </VBox>
+
+            <VBox style="-fx-background-color: #F4F4F4; -fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;">
+                <padding>
+                    <Insets left="10" right="10" top="10" bottom="10">
+                    </Insets>
+                </padding>
+                <Label>Rotation</Label>
+                <GridPane hgap="10">
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="0">x</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="xRotation"
+                            showTickLabels="true"></Slider>
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">y</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="yRotation"
+                            showTickLabels="true"></Slider>
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">z</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="zRotation"
+                            showTickLabels="true"></Slider>
+
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" halignment="CENTER" minWidth="20"/>
+                        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                    </rowConstraints>
+                </GridPane>
+
+            </VBox>
+
+            <VBox style="-fx-background-color: #F4F4F4; -fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;">
+                <padding>
+                    <Insets left="10" right="10" top="10" bottom="10">
+                    </Insets>
+                </padding>
+                <Label>Scaling</Label>
+                <GridPane hgap="10">
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="0">x</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="xScale"
+                            showTickLabels="true"></Slider>
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">y</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="yScale"
+                            showTickLabels="true"></Slider>
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">z</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="zScale"
+                            showTickLabels="true"></Slider>
+                    <Label GridPane.columnIndex="0" GridPane.rowIndex="3">xyz</Label>
+                    <Slider GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="xyzScale"
+                            showTickLabels="true"></Slider>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" halignment="CENTER" minWidth="20"/>
+                        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                    </rowConstraints>
+                </GridPane>
+
+            </VBox>
+
+            <VBox style="-fx-background-color: #F4F4F4; -fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;">
+                <padding>
+                    <Insets left="10" right="10" top="10" bottom="10">
+                    </Insets>
+                </padding>
+                <Label>Single point projection</Label>
+                <GridPane hgap="10">
+                    <Label GridPane.columnIndex="0">pov</Label>
+                    <Slider GridPane.columnIndex="1" fx:id="povSlider" showTickLabels="true"></Slider>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" halignment="CENTER" minWidth="20"/>
+                        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="ALWAYS" valignment="CENTER"></RowConstraints>
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+
+            <VBox style="-fx-background-color: #F4F4F4; -fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;">
+                <padding>
+                    <Insets left="10" right="10" top="10" bottom="10">
+                    </Insets>
+                </padding>
+                <fx:define>
+                    <ToggleGroup fx:id="projectionGroup">
+
+                    </ToggleGroup>
+                </fx:define>
+                <Label>
+                    Projection
+                </Label>
+                <RadioButton fx:id="parallelProjection" toggleGroup="${projectionGroup}">
+                    Parallel
+                </RadioButton>
+                <RadioButton fx:id="singlePointProjection" toggleGroup="${projectionGroup}">
+                    Single point
+                </RadioButton>
+            </VBox>
+
+            <VBox style="-fx-background-color: #F4F4F4; -fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;">
+                <padding>
+                    <Insets left="10" right="10" top="10" bottom="10">
+                    </Insets>
+                </padding>
+                <Label>
+                    Order
+                </Label>
+                <fx:define>
+                    <ToggleGroup fx:id="orderGroup">
+
+                    </ToggleGroup>
+                </fx:define>
+                <RadioButton fx:id="shiftThenRotation" toggleGroup="${orderGroup}">
+                    Shift -> rotation
+                </RadioButton>
+                <RadioButton fx:id="rotationThenShift" toggleGroup="${orderGroup}">
+                    Rotation -> Shift
+                </RadioButton>
+            </VBox>
+        </VBox>
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+        </columnConstraints>
+    </GridPane>
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="300" halignment="CENTER"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" valignment="CENTER"/>
+    </rowConstraints>
+</GridPane>

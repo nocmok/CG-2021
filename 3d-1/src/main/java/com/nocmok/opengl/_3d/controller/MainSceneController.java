@@ -48,5 +48,7 @@ public class MainSceneController extends AbstractController {
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         selectDemo(addDemo("tetrahedron_demo_layout.fxml", "Tetrahedron"));
         addDemo("cube_demo_layout.fxml", "Cube");
+        addDemo("human_demo_layout.fxml", "Human");
+        addDemo("dog_demo_layout.fxml", "Dog");
     }
 }
