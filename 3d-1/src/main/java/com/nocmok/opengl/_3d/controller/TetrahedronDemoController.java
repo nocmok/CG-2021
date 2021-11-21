@@ -23,68 +23,19 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Transform;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TetrahedronDemoController extends AbstractController {
 
-    @FXML
-    private GridPane root;
-    @FXML
-    private Pane frame;
-    @FXML
-    private Slider povSlider;
-
-    @FXML
-    private Slider xShift;
-    @FXML
-    private Slider yShift;
-    @FXML
-    private Slider zShift;
-
-    @FXML
-    private Slider xRotation;
-    @FXML
-    private Slider yRotation;
-    @FXML
-    private Slider zRotation;
-
-    @FXML
-    private Slider xScale;
-    @FXML
-    private Slider yScale;
-    @FXML
-    private Slider zScale;
-    @FXML
-    private Slider xyzScale;
-
-    @FXML
-    private RadioButton shiftThenRotation;
-    @FXML
-    private RadioButton rotationThenShift;
-
-    @FXML
-    private RadioButton parallelProjection;
-    @FXML
-    private RadioButton singlePointProjection;
-
-    private Canvas canvas;
-
-    private Scene scene;
-    private Screen screen;
     private final PolygonModel model = SampleModels.tetrahedronModel(100);
-
-    private Camera camera;
-    private DumbCamera parallelProjectionCamera;
-    private CentralProjectionCamera singlePointProjectionCamera;
-
     private final XYZScale scaling = new XYZScale(1, 1, 1);
     private final XYZShift shift = new XYZShift(0, 0, 0);
     private final XRotation rotationX = new XRotation(0);
     private final YRotation rotationY = new YRotation(0);
     private final ZRotation rotationZ = new ZRotation(0);
-
     private final Transformation[] transformations = new Transformation[]{
             scaling,
             shift,
@@ -94,6 +45,46 @@ public class TetrahedronDemoController extends AbstractController {
     };
     private final int[] shiftThenRotationOrder = new int[]{0, 1, 2, 3, 4};
     private final int[] rotationThenShiftOrder = new int[]{0, 2, 3, 4, 1};
+    @FXML
+    private GridPane root;
+    @FXML
+    private Pane frame;
+    @FXML
+    private Slider povSlider;
+    @FXML
+    private Slider xShift;
+    @FXML
+    private Slider yShift;
+    @FXML
+    private Slider zShift;
+    @FXML
+    private Slider xRotation;
+    @FXML
+    private Slider yRotation;
+    @FXML
+    private Slider zRotation;
+    @FXML
+    private Slider xScale;
+    @FXML
+    private Slider yScale;
+    @FXML
+    private Slider zScale;
+    @FXML
+    private Slider xyzScale;
+    @FXML
+    private RadioButton shiftThenRotation;
+    @FXML
+    private RadioButton rotationThenShift;
+    @FXML
+    private RadioButton parallelProjection;
+    @FXML
+    private RadioButton singlePointProjection;
+    private Canvas canvas;
+    private Scene scene;
+    private Screen screen;
+    private Camera camera;
+    private DumbCamera parallelProjectionCamera;
+    private CentralProjectionCamera singlePointProjectionCamera;
     private int[] transformationsOrder = shiftThenRotationOrder;
 
     @Override public Parent getRoot() {
@@ -106,8 +97,49 @@ public class TetrahedronDemoController extends AbstractController {
         g2.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
+    private void drawArrow(Canvas canvas, double x0, double y0, double x1, double y1) {
+        var g2 = canvas.getGraphicsContext2D();
+        g2.setStroke(Color.BLACK);
+        g2.setFill(Color.BLACK);
+
+        g2.strokeLine(x0, y0, x1, y1);
+
+        double angle = Math.toDegrees(Math.atan2(y1 - y0, x1 - x0)) + 90;
+        var rotation = Transform.rotate(angle, x1, y1);
+
+        double side = 10;
+        double cos30 = 0.87;
+        double[] points = new double[]{x1 - side / 2, y1, x1 + side / 2, y1, x1, y1 - cos30 * side};
+        double[] rotated = new double[6];
+
+        rotation.transform2DPoints(points, 0, rotated, 0, 3);
+
+        g2.fillPolygon(new double[]{rotated[0], rotated[2], rotated[4]},
+                new double[]{rotated[1], rotated[3], rotated[5]}, 3);
+    }
+
+    private void drawCoordinateArrows(Canvas canvas, double xArrowSize, double yArrowSize) {
+        var g2 = canvas.getGraphicsContext2D();
+        g2.setStroke(Color.BLACK);
+        double x0 = canvas.getWidth() / 2;
+        double y0 = canvas.getHeight() / 2;
+
+        drawArrow(canvas, x0, y0, x0 + xArrowSize, y0);
+        drawArrow(canvas, x0, y0, x0, y0 - yArrowSize);
+
+        g2.strokeText("x", x0 + xArrowSize + 20, y0);
+        g2.strokeText("y", x0, y0 - yArrowSize - 20);
+
+        g2.setFill(Color.WHITE);
+        g2.fillOval(x0 - 6, y0 - 6, 12, 12);
+        g2.strokeOval(x0 - 6, y0 - 6, 12, 12);
+        g2.setFill(Color.BLACK);
+        g2.fillOval(x0 - 2, y0 - 2, 4, 4);
+    }
+
     private void redrawScene() {
         clearCanvas(canvas);
+        drawCoordinateArrows(canvas, 200, 200);
         scene.getTransformations().clear();
         for (var next : transformationsOrder) {
             scene.addTransformation(transformations[next]);
@@ -140,7 +172,7 @@ public class TetrahedronDemoController extends AbstractController {
         scene.addTransformation(rotationY);
         scene.addTransformation(rotationZ);
 
-        scene.draw(screen, parallelProjectionCamera);
+        redrawScene();
 
         /* Order */
         shiftThenRotation.setSelected(true);
