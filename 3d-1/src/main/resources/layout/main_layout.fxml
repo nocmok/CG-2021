@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.Button?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
           fx:controller="com.nocmok.opengl._3d.controller.MainSceneController">
 
@@ -13,13 +14,29 @@
 
     </AnchorPane>
 
-    <HBox fx:id="demos" spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="1">
-        <padding>
-            <Insets left="20" right="20" top="20" bottom="20">
+    <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <HBox fx:id="demos" spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="0">
+            <padding>
+                <Insets left="20" right="20" top="20" bottom="20">
 
-            </Insets>
-        </padding>
-    </HBox>
+                </Insets>
+            </padding>
+        </HBox>
+        <HBox GridPane.columnIndex="1" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets left="20" right="20" top="20" bottom="20">
+
+                </Insets>
+            </padding>
+            <Button fx:id="about">
+                About
+            </Button>
+        </HBox>
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+            <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>
+        </columnConstraints>
+    </GridPane>
 
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" halignment="CENTER"/>

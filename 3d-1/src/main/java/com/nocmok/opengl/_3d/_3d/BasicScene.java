@@ -70,7 +70,6 @@ public class BasicScene implements Scene {
         return transformations;
     }
 
-    // Метод предполагает, что объект валиден и виден на камере
     private void drawObject(Screen screen, Camera camera, Object3D obj) {
         double[][] objPoints = deepCopy(obj.model.getPoints());
 

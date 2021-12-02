@@ -8,10 +8,10 @@ public class SampleModels {
 
     public static PolygonModel tetrahedronModel(double side) {
         double[][] points = new double[][]{
-                {0, side, 0, 1},
-                {0, 0, side, 1},
-                {(-side * Math.cos(Math.PI / 6)), 0, (-100 * Math.sin(Math.PI / 6)), 1},
-                {(side * Math.cos(Math.PI / 6)), 0, (-100 * Math.sin(Math.PI / 6)), 1}
+                {0, side * 2 / 3, 0, 1},
+                {0, -side * 1 / 3, side, 1},
+                {(-side * Math.cos(Math.PI / 6)), -side * 1 / 3, (-100 * Math.sin(Math.PI / 6)), 1},
+                {(side * Math.cos(Math.PI / 6)), -side * 1 / 3, (-100 * Math.sin(Math.PI / 6)), 1}
         };
         int[][] topology = new int[][]{
                 {0, 1, 2},
