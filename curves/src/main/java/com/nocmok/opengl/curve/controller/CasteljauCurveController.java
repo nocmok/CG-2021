@@ -1,6 +1,6 @@
 package com.nocmok.opengl.curve.controller;
 
-import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
+import com.nocmok.opengl.curve.controller.action.BezierCurvePivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.CasteljauCurve;
@@ -110,7 +110,7 @@ public class CasteljauCurveController extends AbstractController {
         var closureDrawer = new CasteljauSpline((x, y) -> canvas.setPixel((int)x, (int)y, Color.GREEN), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
-        var pivotsHandler = new AddPivotHandler() {
+        var pivotsHandler = new BezierCurvePivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
                 var points = pivots.stream()

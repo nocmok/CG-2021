@@ -1,10 +1,9 @@
 package com.nocmok.opengl.curve.controller;
 
-import com.nocmok.opengl.curve.controller.action.AddPivotHandler;
+import com.nocmok.opengl.curve.controller.action.BezierCurvePivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.BezierCurve;
-import com.nocmok.opengl.curve.curve_drawer.BezierSpline;
 import com.nocmok.opengl.curve.curve_drawer.BezierSpline3;
 import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
@@ -24,7 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -111,7 +109,7 @@ public class BezierCurveController extends AbstractController {
         var closureDrawer = new BezierSpline3((x, y) -> canvas.setPixel((int) x, (int) y, Color.GREEN), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
-        var pivotsHandler = new AddPivotHandler() {
+        var pivotsHandler = new BezierCurvePivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
                 var points = pivots.stream()
@@ -121,21 +119,21 @@ public class BezierCurveController extends AbstractController {
                 bezierCurve.drawCurve(points);
 
                 // добавляем замыкание
-                if(points.size() > 2) {
-                    // взять первые две и последние две точки
-
-                    // вычислить еще две опорные точки
-                    // взять вычисленные две, первую и последнюю точку
-
-                    // построить сплайн на полученных 4 точках
-
-                    var closurePivots = List.of(points.get(0),
-                            computeClosure(points.get(1), points.get(0)),
-                            computeClosure(points.get(points.size() - 2), points.get(points.size() - 1)),
-                            points.get(points.size() - 1));
-
-                    closureDrawer.drawCurve(closurePivots);
-                }
+//                if(points.size() > 2) {
+//                    // взять первые две и последние две точки
+//
+//                    // вычислить еще две опорные точки
+//                    // взять вычисленные две, первую и последнюю точку
+//
+//                    // построить сплайн на полученных 4 точках
+//
+//                    var closurePivots = List.of(points.get(0),
+//                            computeClosure(points.get(1), points.get(0)),
+//                            computeClosure(points.get(points.size() - 2), points.get(points.size() - 1)),
+//                            points.get(points.size() - 1));
+//
+//                    closureDrawer.drawCurve(closurePivots);
+//                }
             }
         };
         pivotsHandler.attach(frame);
