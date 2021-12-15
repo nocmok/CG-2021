@@ -34,7 +34,8 @@ public class CasteljauCurve implements CurveDrawer {
             }
         }
 
-        for (int i = 0; i + 1 < splines.size(); i += 3) {
+        // строим сплайны на 4 точках
+        for (int i = 0; i + 3 < splines.size(); i += 3) {
             splineDrawer.drawCurve(splines.subList(i, i + Integer.min(4, splines.size() - i)));
         }
     }
