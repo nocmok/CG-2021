@@ -3,6 +3,7 @@ package com.nocmok.opengl.curve.controller.control;
 import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public abstract class RegularPivot extends Pivot {
 
@@ -16,7 +17,7 @@ public abstract class RegularPivot extends Pivot {
 
         setAlignment(Pos.CENTER);
 
-        getChildren().add(new LabeledCircle(label));
+        getChildren().add(new LabeledCircle(label, Color.WHITE));
 
         addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onDrag);
         addEventHandler(MouseEvent.MOUSE_CLICKED, Event::consume);
@@ -40,12 +41,14 @@ public abstract class RegularPivot extends Pivot {
         onChanged();
     }
 
-    public void setX(double x) {
+    @Override public void setX(double x) {
         this.x = x;
+        setTranslateX(x - getWidth() / 2);
     }
 
-    public void setY(double y) {
+    @Override public void setY(double y) {
         this.y = y;
+        setTranslateY(y - getWidth() / 2);
     }
 
     public double x() {

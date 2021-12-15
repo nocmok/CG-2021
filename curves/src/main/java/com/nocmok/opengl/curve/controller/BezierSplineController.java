@@ -1,6 +1,7 @@
 package com.nocmok.opengl.curve.controller;
 
 import com.nocmok.opengl.curve.controller.action.BezierCurvePivotHandler;
+import com.nocmok.opengl.curve.controller.action.LinearCurvePivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.BezierSpline;
@@ -95,7 +96,7 @@ public class BezierSplineController extends AbstractController {
         var bezierSpline = new BezierSpline((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
-        var pivotsHandler = new BezierCurvePivotHandler() {
+        var pivotsHandler = new LinearCurvePivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
                 var points = pivots.stream()

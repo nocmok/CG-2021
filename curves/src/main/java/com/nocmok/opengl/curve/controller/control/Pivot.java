@@ -13,4 +13,8 @@ public abstract class Pivot extends StackPane {
 
     public abstract double y();
 
+    public abstract void setX(double x);
+
+    public abstract void setY(double y);
+
 }

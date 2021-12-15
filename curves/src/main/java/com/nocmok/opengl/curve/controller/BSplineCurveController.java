@@ -1,6 +1,6 @@
 package com.nocmok.opengl.curve.controller;
 
-import com.nocmok.opengl.curve.controller.action.BezierCurvePivotHandler;
+import com.nocmok.opengl.curve.controller.action.LinearCurvePivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.BSpline3;
@@ -98,7 +98,7 @@ public class BSplineCurveController extends AbstractController {
         var bSpline3 = new BSpline3((x, y) -> canvas.setPixel((int) x, (int) y, Color.GREEN), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
-        var pivotsHandler = new BezierCurvePivotHandler() {
+        var pivotsHandler = new LinearCurvePivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
                 var points = pivots.stream()
@@ -107,11 +107,11 @@ public class BSplineCurveController extends AbstractController {
                 linearInterpolation.drawCurve(points);
                 bSpline.drawCurve(points);
 
-                if(points.size() >= 4) {
+                if (points.size() >= 4) {
                     int n = points.size() - 1;
-                    bSpline3.drawCurve(List.of(points.get(n-2),points.get(n-1),points.get(n), points.get(0)));
-                    bSpline3.drawCurve(List.of(points.get(n-1),points.get(n),points.get(0), points.get(1)));
-                    bSpline3.drawCurve(List.of(points.get(n),points.get(0),points.get(1), points.get(2)));
+                    bSpline3.drawCurve(List.of(points.get(n - 2), points.get(n - 1), points.get(n), points.get(0)));
+                    bSpline3.drawCurve(List.of(points.get(n - 1), points.get(n), points.get(0), points.get(1)));
+                    bSpline3.drawCurve(List.of(points.get(n), points.get(0), points.get(1), points.get(2)));
                 }
             }
         };

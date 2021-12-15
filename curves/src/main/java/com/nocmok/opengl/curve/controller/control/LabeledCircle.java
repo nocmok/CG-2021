@@ -8,19 +8,18 @@ import javafx.scene.shape.Circle;
 
 public class LabeledCircle extends StackPane {
 
-    public LabeledCircle(String label) {
+    public LabeledCircle(String label, Color color) {
         setWidth(20);
         setHeight(20);
 
         setAlignment(Pos.CENTER);
 
         var circle = new Circle();
+        circle.setFill(color);
         circle.setRadius(10);
-        circle.setFill(Color.WHITE);
         circle.setStroke(Color.BLACK);
 
         var labelNode = new Label(label);
-
         getChildren().add(circle);
         getChildren().add(labelNode);
     }

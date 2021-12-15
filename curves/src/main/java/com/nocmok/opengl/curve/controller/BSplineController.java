@@ -1,6 +1,7 @@
 package com.nocmok.opengl.curve.controller;
 
 import com.nocmok.opengl.curve.controller.action.BezierCurvePivotHandler;
+import com.nocmok.opengl.curve.controller.action.LinearCurvePivotHandler;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.BSpline3;
@@ -18,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
+import javax.sound.sampled.Line;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -95,7 +97,7 @@ public class BSplineController extends AbstractController {
         var bSpline = new BSpline3((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
         var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
 
-        var pivotsHandler = new BezierCurvePivotHandler() {
+        var pivotsHandler = new LinearCurvePivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
                 canvas.clear(Color.WHITE);
                 var points = pivots.stream()
