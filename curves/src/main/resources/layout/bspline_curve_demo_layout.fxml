@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.CheckBox?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" stylesheets="@../css/style.css"
           fx:controller="com.nocmok.opengl.curve.controller.BSplineCurveController">
     <padding>
@@ -23,6 +24,8 @@
             <Button fx:id="clear">
                 clear
             </Button>
+            <CheckBox fx:id="closureCheckbox" text="Замкнуть">
+            </CheckBox>
         </HBox>
         <HBox spacing="5" GridPane.columnIndex="2" alignment="CENTER_RIGHT">
             <Button fx:id="about">

@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
@@ -42,6 +43,8 @@ public class BSplineCurveController extends AbstractController {
     private ScrollPane scroll;
     @FXML
     private Button about;
+    @FXML
+    private CheckBox closureCheckbox;
     private PixelatedCanvas canvas;
 
     @Override public Parent getRoot() {
@@ -107,7 +110,7 @@ public class BSplineCurveController extends AbstractController {
                 linearInterpolation.drawCurve(points);
                 bSpline.drawCurve(points);
 
-                if (points.size() >= 4) {
+                if (closureCheckbox.isSelected() && points.size() >= 4) {
                     int n = points.size() - 1;
                     bSpline3.drawCurve(List.of(points.get(n - 2), points.get(n - 1), points.get(n), points.get(0)));
                     bSpline3.drawCurve(List.of(points.get(n - 1), points.get(n), points.get(0), points.get(1)));
@@ -116,6 +119,30 @@ public class BSplineCurveController extends AbstractController {
             }
         };
         pivotsHandler.attach(frame);
+
+        closureCheckbox.selectedProperty().addListener((a, b, c) -> {
+            var pivots = pivotsHandler.getPivots();
+            var points = pivots.stream()
+                    .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
+                    .collect(Collectors.toList());
+
+            if (closureCheckbox.isSelected()) {
+                if (pivots.size() >= 4) {
+
+                    linearInterpolation.drawCurve(points);
+                    bSpline.drawCurve(points);
+
+                    int n = points.size() - 1;
+                    bSpline3.drawCurve(List.of(points.get(n - 2), points.get(n - 1), points.get(n), points.get(0)));
+                    bSpline3.drawCurve(List.of(points.get(n - 1), points.get(n), points.get(0), points.get(1)));
+                    bSpline3.drawCurve(List.of(points.get(n), points.get(0), points.get(1), points.get(2)));
+                }
+            } else {
+                canvas.clear(Color.WHITE);
+                linearInterpolation.drawCurve(points);
+                bSpline.drawCurve(points);
+            }
+        });
 
         clear.setOnMouseClicked(e -> {
             canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);

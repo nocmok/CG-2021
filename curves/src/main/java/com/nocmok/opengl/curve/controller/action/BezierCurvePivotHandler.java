@@ -61,7 +61,7 @@ public abstract class BezierCurvePivotHandler implements ActionHandler<Pane> {
         onPivotsChange(pivots);
     }
 
-    public Collection<Pivot> getPivots() {
+    public List<Pivot> getPivots() {
         return pivots;
     }
 

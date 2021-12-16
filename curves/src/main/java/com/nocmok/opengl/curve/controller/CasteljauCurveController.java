@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
@@ -42,6 +43,8 @@ public class CasteljauCurveController extends AbstractController {
     private ScrollPane scroll;
     @FXML
     private Button about;
+    @FXML
+    private CheckBox closureCheckbox;
     private PixelatedCanvas canvas;
 
     @Override public Parent getRoot() {
@@ -120,7 +123,7 @@ public class CasteljauCurveController extends AbstractController {
                 casteljauCurve.drawCurve(points);
 
                 // добавляем замыкание
-                if(points.size() > 2) {
+                if(closureCheckbox.isSelected() && points.size() >= 4) {
                     // взять первые две и последние две точки
 
                     // вычислить еще две опорные точки
@@ -130,14 +133,47 @@ public class CasteljauCurveController extends AbstractController {
 
                     var closurePivots = List.of(points.get(0),
                             computeClosure(points.get(1), points.get(0)),
-                            computeClosure(points.get(points.size() - 2), points.get(points.size() - 1)),
-                            points.get(points.size() - 1));
+                            computeClosure(points.get(((points.size() - 1) / 3) * 3 - 1), points.get(((points.size() - 1) / 3) * 3)),
+                            points.get(((points.size() - 1) / 3) * 3));
 
                     closureDrawer.drawCurve(closurePivots);
                 }
             }
         };
         pivotsHandler.attach(frame);
+
+        closureCheckbox.selectedProperty().addListener((a, b, c) -> {
+            var pivots = pivotsHandler.getPivots();
+            if (closureCheckbox.isSelected()) {
+                if (pivots.size() >= 4) {
+                    var points = pivots.stream()
+                            .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
+                            .collect(Collectors.toList());
+                    linearInterpolation.drawCurve(points);
+                    casteljauCurve.drawCurve(points);
+                    // взять первые две и последние две точки
+
+                    // вычислить еще две опорные точки
+                    // взять вычисленные две, первую и последнюю точку
+
+                    // построить сплайн на полученных 4 точках
+
+                    var closurePivots = List.of(points.get(0),
+                            computeClosure(points.get(1), points.get(0)),
+                            computeClosure(points.get(((points.size() - 1) / 3) * 3 - 1), points.get(((points.size() - 1) / 3) * 3)),
+                            points.get(((points.size() - 1) / 3) * 3));
+
+                    closureDrawer.drawCurve(closurePivots);
+                }
+            } else {
+                canvas.clear(Color.WHITE);
+                var points = pivots.stream()
+                        .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
+                        .collect(Collectors.toList());
+                linearInterpolation.drawCurve(points);
+                casteljauCurve.drawCurve(points);
+            }
+        });
 
         clear.setOnMouseClicked(e -> {
             canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
