@@ -1,12 +1,14 @@
 package com.nocmok.opengl.curve.controller;
 
 import com.nocmok.opengl.curve.controller.action.LinearCurvePivotHandler;
+import com.nocmok.opengl.curve.controller.control.CanvasGrid;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -39,7 +41,7 @@ public class LinearInterpolationController extends AbstractController {
     private ScrollPane scroll;
     @FXML
     private Button about;
-    private PixelatedCanvas canvas;
+    private Canvas canvas;
 
     @Override public Parent getRoot() {
         return root;
@@ -54,23 +56,17 @@ public class LinearInterpolationController extends AbstractController {
         return null;
     }
 
+    private void clearCanvas(Canvas canvas) {
+        var gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0,0, canvas.getWidth(), canvas.getHeight());
+    }
+
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        int pixelSize = 2;
         var screen = Screen.getPrimary().getBounds();
-
-        double h = ((int) screen.getHeight()) - ((int) screen.getHeight()) % pixelSize;
-        double w = ((int) screen.getWidth()) - ((int) screen.getWidth()) % pixelSize;
-
-        int pixelH = (int) (h / pixelSize);
-        int pixelW = (int) (w / pixelSize);
-
-        canvas = new PixelatedCanvas(pixelW, pixelH);
-
-        canvas.setWidth(w);
-        canvas.setHeight(h);
-
-        canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+        canvas = new Canvas(screen.getWidth(), screen.getHeight());
+        clearCanvas(canvas);
         frame.getChildren().add(canvas);
 
         scroll.addEventFilter(ScrollEvent.SCROLL, e -> {
@@ -90,20 +86,20 @@ public class LinearInterpolationController extends AbstractController {
             alert.showAndWait();
         });
 
-        var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE));
+        var linearInterpolation = new LinearCurve(new CanvasGrid(canvas, Color.ROYALBLUE, 3));
         var pivotsHandler = new LinearCurvePivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
-                canvas.clear(Color.WHITE);
+                clearCanvas(canvas);
                 linearInterpolation.drawCurve(
                         pivots.stream()
-                                .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
+                                .map(p -> new Point(p.x(), p.y()))
                                 .collect(Collectors.toList()));
             }
         };
         pivotsHandler.attach(frame);
 
         clear.setOnMouseClicked(e -> {
-            canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+            clearCanvas(canvas);
             pivotsHandler.getPivots().clear();
             frame.getChildren().clear();
             frame.getChildren().add(canvas);

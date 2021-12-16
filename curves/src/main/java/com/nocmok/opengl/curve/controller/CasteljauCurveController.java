@@ -1,6 +1,7 @@
 package com.nocmok.opengl.curve.controller;
 
 import com.nocmok.opengl.curve.controller.action.BezierCurvePivotHandler;
+import com.nocmok.opengl.curve.controller.control.CanvasGrid;
 import com.nocmok.opengl.curve.controller.control.Pivot;
 import com.nocmok.opengl.curve.controller.control.PixelatedCanvas;
 import com.nocmok.opengl.curve.curve_drawer.CasteljauCurve;
@@ -9,6 +10,7 @@ import com.nocmok.opengl.curve.curve_drawer.LinearCurve;
 import com.nocmok.opengl.curve.util.Point;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -45,7 +47,7 @@ public class CasteljauCurveController extends AbstractController {
     private Button about;
     @FXML
     private CheckBox closureCheckbox;
-    private PixelatedCanvas canvas;
+    private Canvas canvas;
 
     @Override public Parent getRoot() {
         return root;
@@ -72,23 +74,17 @@ public class CasteljauCurveController extends AbstractController {
         return new Point(x, y);
     }
 
+    private void clearCanvas(Canvas canvas) {
+        var gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0,0, canvas.getWidth(), canvas.getHeight());
+    }
+
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        int pixelSize = 2;
         var screen = Screen.getPrimary().getBounds();
-
-        double h = ((int) screen.getHeight()) - ((int) screen.getHeight()) % pixelSize;
-        double w = ((int) screen.getWidth()) - ((int) screen.getWidth()) % pixelSize;
-
-        int pixelH = (int) (h / pixelSize);
-        int pixelW = (int) (w / pixelSize);
-
-        canvas = new PixelatedCanvas(pixelW, pixelH);
-
-        canvas.setWidth(w);
-        canvas.setHeight(h);
-
-        canvas.clear(Color.WHITE);
+        canvas = new Canvas(screen.getWidth(), screen.getHeight());
+        clearCanvas(canvas);
         frame.getChildren().add(canvas);
 
         scroll.addEventFilter(ScrollEvent.SCROLL, e -> {
@@ -109,15 +105,15 @@ public class CasteljauCurveController extends AbstractController {
         });
 
         double step = 1e-2;
-        var casteljauCurve = new CasteljauCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.ROYALBLUE), step);
-        var closureDrawer = new CasteljauSpline((x, y) -> canvas.setPixel((int)x, (int)y, Color.GREEN), step);
-        var linearInterpolation = new LinearCurve((x, y) -> canvas.setPixel((int) x, (int) y, Color.LIGHTGRAY));
+        var casteljauCurve = new CasteljauCurve(new CanvasGrid(canvas, Color.ROYALBLUE, 3), step);
+        var closureDrawer = new CasteljauSpline(new CanvasGrid(canvas, Color.GREEN, 3), step);
+        var linearInterpolation = new LinearCurve(new CanvasGrid(canvas, Color.LIGHTGRAY, 1));
 
         var pivotsHandler = new BezierCurvePivotHandler() {
             @Override public void onPivotsChange(Collection<Pivot> pivots) {
-                canvas.clear(Color.WHITE);
+                clearCanvas(canvas);
                 var points = pivots.stream()
-                        .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
+                        .map(p -> new Point(p.x(), p.y()))
                         .collect(Collectors.toList());
                 linearInterpolation.drawCurve(points);
                 casteljauCurve.drawCurve(points);
@@ -147,7 +143,7 @@ public class CasteljauCurveController extends AbstractController {
             if (closureCheckbox.isSelected()) {
                 if (pivots.size() >= 4) {
                     var points = pivots.stream()
-                            .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
+                            .map(p -> new Point(p.x(), p.y()))
                             .collect(Collectors.toList());
                     linearInterpolation.drawCurve(points);
                     casteljauCurve.drawCurve(points);
@@ -166,9 +162,9 @@ public class CasteljauCurveController extends AbstractController {
                     closureDrawer.drawCurve(closurePivots);
                 }
             } else {
-                canvas.clear(Color.WHITE);
+                clearCanvas(canvas);
                 var points = pivots.stream()
-                        .map(p -> new Point(canvas.toPixelX(p.x()), canvas.toPixelY(p.y())))
+                        .map(p -> new Point(p.x(), p.y()))
                         .collect(Collectors.toList());
                 linearInterpolation.drawCurve(points);
                 casteljauCurve.drawCurve(points);
@@ -176,7 +172,7 @@ public class CasteljauCurveController extends AbstractController {
         });
 
         clear.setOnMouseClicked(e -> {
-            canvas.fillRect(0, 0, pixelW, pixelH, Color.WHITE);
+            clearCanvas(canvas);
             pivotsHandler.getPivots().clear();
             frame.getChildren().clear();
             frame.getChildren().add(canvas);

@@ -8,11 +8,11 @@ public class BezierSpline3 implements CurveDrawer {
 
     private final double step;
 
-    private final LinearCurve lineDrawer;
+    private Grid grid;
 
     public BezierSpline3(Grid grid, double step) {
         this.step = step;
-        this.lineDrawer = new LinearCurve(grid);
+        this.grid = grid;
     }
 
     private Point getPointByT(List<Point> pivots, double t) {
@@ -35,7 +35,7 @@ public class BezierSpline3 implements CurveDrawer {
         for (double t = 0d; t <= 1d; t += step) {
             var p1 = getPointByT(pivots, t);
             if (p0 != null) {
-                lineDrawer.drawLine(p0.x, p0.y, p1.x, p1.y);
+                grid.drawLine(p0.x, p0.y, p1.x, p1.y);
             }
             p0 = p1;
         }
